@@ -1,0 +1,55 @@
+name: 📦 每周作业更新
+description: 填写本周作业，提交后机器人自动发布到网站
+labels: [homework]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 🤖 作业自动发布表单
+
+        填完提交，1 分钟后自动出现在网站上。
+        **作业列表每行一门课，用竖线 `|` 分隔三栏**，格式示例：
+
+        ```
+        概率统计B | 习题2.1：1、2、3 | 10.6 23:59
+        普通物理学 | 习题 7-1 到 7-5 |
+        ```
+
+        - 第三栏（截止时间）可以留空
+        - 截止时间会自动显示成红色徽章
+        - 手机上竖线在符号键盘里能找到
+
+  - type: input
+    id: week
+    attributes:
+      label: 周次
+      description: 例如「26秋 第 4 周」或「第 4 周（10.6–10.12）」
+      placeholder: 26秋 第 4 周
+    validations:
+      required: true
+
+  - type: textarea
+    id: items
+    attributes:
+      label: 作业列表
+      description: 每行一门课：科目 | 作业内容 | 截止时间
+      placeholder: |
+        概率统计B | 习题2.1：1、2、3 | 10.6 23:59
+        普通物理学 | 习题 7-1 到 7-5 |
+        基础医学实验 | 第三次实验报告 | 第六周课前
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: 特别提醒（可选）
+      description: 会被放进黄色提醒框，没有就不填
+      placeholder: 数学小测改到周四，范围第 3 章
+
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: Numbers 截图（可选）
+      description: 直接把截图粘贴到这个输入框里（Cmd+V），会自动上传
+      placeholder: （直接粘贴图片即可）
