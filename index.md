@@ -9,7 +9,7 @@ show_banner: true
 
 ## 🏠 最新动态
 
-- **9.28** 第 6 周作业已更新 → [查看](homework.html)
+- **9.25** 第 3 周作业已更新 → [查看](homework.html)
 
 ## ❓ 使用说明
 
