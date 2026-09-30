@@ -9,12 +9,15 @@ show_banner: true
 
 ## 📄 常用表格下载
 
-<div style="display:flex;gap:12px;flex-wrap:wrap;margin:16px 0 8px">
-  <a href="files/leave-application.pdf" download style="flex:1 1 200px;display:block;text-align:center;background:#1e5799;color:#fff;text-decoration:none;padding:18px 16px;border-radius:12px;font-weight:600;font-size:15px;box-shadow:0 2px 8px rgba(30,87,153,.25)">📝 请假条<br><span style="font-size:12px;font-weight:400;opacity:.9">点此下载</span></a>
-  <a href="files/leave-school-form.pdf" download style="flex:1 1 200px;display:block;text-align:center;background:#1e5799;color:#fff;text-decoration:none;padding:18px 16px;border-radius:12px;font-weight:600;font-size:15px;box-shadow:0 2px 8px rgba(30,87,153,.25)">📋 离校备案表<br><span style="font-size:12px;font-weight:400;opacity:.9">点此下载</span></a>
+导员要求的常用表格，点按钮直接下载 ↓
+
+<a href="https://raw.githubusercontent.com/BertAGT/254511-Notifications/main/files/leave-application.xlsx" class="dl-btn">📋 请假条（Excel）</a>
+<a href="https://raw.githubusercontent.com/BertAGT/254511-Notifications/main/files/leave-school-form.doc" class="dl-btn">🏫 离校备案表（Word）</a>
+
+<div class="dl-tip">
+💡 若无法下载，请用浏览器打开。
 </div>
 
-<p style="font-size:13px;color:#7f8c8d">若手机点不开，请用浏览器打开本页再下载。</p>
 
 ## 🏠 最新动态
 
