@@ -37,6 +37,7 @@
     backdrop-filter:blur(12px);
     -webkit-backdrop-filter:blur(12px);
     border-bottom:1px solid rgba(26,94,122,.12);
+    box-shadow:0 2px 14px rgba(13,59,71,.06);
   }
   .nav-inner{max-width:880px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:18px}
   .brand{display:flex;align-items:center;gap:9px;font-weight:800;font-size:16px;color:var(--teal-900);text-decoration:none;letter-spacing:.5px}
@@ -54,37 +55,62 @@
     position:relative;overflow:hidden;
     margin-top:24px;border-radius:24px;
     padding:44px 40px 92px;
-    background:linear-gradient(130deg,var(--teal-900) 0%,var(--teal-700) 55%,#2E7D6E 100%);
+    /* 底层：心电图纸网格（监护仪屏幕质感）→ 顶部渐亮 → 主渐变 */
+    background:
+      linear-gradient(rgba(168,230,207,.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(168,230,207,.06) 1px, transparent 1px),
+      radial-gradient(120% 90% at 20% 0%, rgba(255,255,255,.14), transparent 55%),
+      linear-gradient(130deg,var(--teal-900) 0%,var(--teal-700) 55%,#2E7D6E 100%);
+    background-size:26px 26px,26px 26px,auto,auto;
     color:#fff;
-    box-shadow:0 14px 34px rgba(12,51,65,.28);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,.10) inset,
+      0 18px 40px -10px rgba(12,51,65,.5);
   }
   .hero::before{
     content:"";position:absolute;right:-90px;top:-90px;width:280px;height:280px;border-radius:50%;
     background:radial-gradient(circle,rgba(168,230,207,.22),transparent 70%);
   }
-  .hero h1{margin:0 0 8px;font-size:34px;font-weight:800;letter-spacing:1px}
+  .hero h1{
+    margin:0 0 8px;font-size:34px;font-weight:800;letter-spacing:1px;
+    text-shadow:0 2px 8px rgba(0,0,0,.3);
+  }
   .hero .sub{margin:0;font-size:15px;color:var(--mint);font-weight:500;letter-spacing:2px}
   .org-badge{
     display:inline-flex;align-items:center;gap:7px;margin-top:18px;
     padding:7px 16px;border-radius:999px;font-size:13px;font-weight:600;
     background:rgba(255,255,255,.12);border:1px solid rgba(168,230,207,.4);color:var(--mint);
+    box-shadow:0 1px 0 rgba(255,255,255,.15) inset, 0 4px 10px rgba(0,0,0,.15);
+    backdrop-filter:blur(4px);
   }
-  .hero .ecg{position:absolute;left:0;right:0;bottom:-4px;width:100%;height:72px;display:block}
+  .hero .ecg{position:absolute;left:0;right:0;bottom:-4px;width:100%;height:78px;display:block}
+  /* 发光底衬：粗+模糊，营造示波管辉光 */
+  .ecg-glow{
+    fill:none;stroke:var(--mint);stroke-width:9;stroke-linecap:round;stroke-linejoin:round;
+    opacity:.22;filter:blur(5px);
+  }
+  /* 远端导联：静态淡线，增加纵深 */
+  .ecg-line.dim{
+    stroke:rgba(168,230,207,.22);stroke-width:1.6;filter:none;
+    animation:none;stroke-dasharray:none;stroke-dashoffset:0;
+  }
   .ecg-line{
     fill:none;stroke:var(--mint);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;
-    filter:drop-shadow(0 0 5px rgba(168,230,207,.8));
-    stroke-dasharray:1400;stroke-dashoffset:1400;
-    animation:ecg-run 6s linear infinite;
+    filter:drop-shadow(0 0 5px rgba(168,230,207,.9));
+    stroke-dasharray:1600;stroke-dashoffset:1600;
+    animation:ecg-run 7s linear infinite;
   }
-  .ecg-line.dim{stroke:rgba(168,230,207,.28);stroke-width:2;filter:none;animation:none;stroke-dasharray:none;stroke-dashoffset:0}
-  @keyframes ecg-run{to{stroke-dashoffset:-1400}}
+  @keyframes ecg-run{to{stroke-dashoffset:-1600}}
   @media (prefers-reduced-motion:reduce){.ecg-line{animation:none;stroke-dashoffset:0}}
 
   /* ===== 正文卡片 ===== */
   .card{
     background:var(--card);border-radius:22px;
     padding:14px 36px 38px;margin:24px 0 46px;
-    box-shadow:0 8px 26px rgba(13,59,71,.09);
+    border:1px solid rgba(255,255,255,.9);
+    box-shadow:
+      0 1px 3px rgba(13,59,71,.07),
+      0 14px 36px -10px rgba(13,59,71,.18);
   }
   h2{
     display:flex;align-items:center;gap:11px;
@@ -93,6 +119,7 @@
     background:linear-gradient(90deg,rgba(26,94,122,.10),rgba(168,230,207,.18) 65%,transparent);
     border-left:5px solid var(--teal-700);
     border-radius:12px;
+    box-shadow:0 1px 3px rgba(13,59,71,.08);
   }
   h3{color:var(--teal-700);margin:24px 0 10px}
   a{color:var(--teal-700);font-weight:600;text-decoration:none;border-bottom:2px solid rgba(168,230,207,.9);transition:background .15s}
@@ -151,13 +178,22 @@
   /* 下载按钮 */
   .dl-btn{
     display:inline-flex;align-items:center;gap:9px;
-    background:linear-gradient(135deg,var(--teal-700),var(--mint-strong));
+    background:linear-gradient(180deg,#2A7D9C 0%,var(--teal-700) 45%,#17648A 100%);
     color:#fff;font-size:15px;font-weight:700;
     padding:13px 26px;border-radius:999px;margin:8px 12px 8px 0;
-    box-shadow:0 5px 14px rgba(26,94,122,.28);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,.35) inset,
+      0 -2px 4px rgba(0,0,0,.18) inset,
+      0 6px 16px rgba(26,94,122,.35);
     transition:transform .16s, box-shadow .16s;
   }
-  .dl-btn:hover{transform:translateY(-2px);box-shadow:0 9px 20px rgba(26,94,122,.36);background:linear-gradient(135deg,#226E8E,#5BC9A6)}
+  .dl-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,.35) inset,
+      0 -2px 4px rgba(0,0,0,.18) inset,
+      0 10px 22px rgba(26,94,122,.45);
+  }
   .dl-btn:active{transform:translateY(0)}
 
   footer{
@@ -197,9 +233,13 @@
   <h1>📘 {{ site.title }}</h1>
   <p class="sub">每周作业 · 学习通知 · 一站直达</p>
   <span class="org-badge">🚀 北京航空航天大学 · 医学科学与工程学院</span>
-  <svg class="ecg" viewBox="0 0 900 72" preserveAspectRatio="none" aria-hidden="true">
-    <polyline class="ecg-line dim" points="0,44 260,44 272,44 280,26 290,58 300,8 310,52 318,44 560,44 572,44 580,26 590,58 600,8 610,52 618,44 900,44"/>
-    <polyline class="ecg-line" points="0,44 260,44 272,44 280,26 290,58 300,8 310,52 318,44 560,44 572,44 580,26 590,58 600,8 610,52 618,44 900,44"/>
+  <svg class="ecg" viewBox="0 0 900 78" preserveAspectRatio="none" aria-hidden="true">
+    <!-- 远端导联（静态淡线，纵深感） -->
+    <polyline class="ecg-line dim" points="0,26 180,26 188,21 196,26 230,26 240,15 246,39 252,0 258,33 264,26 300,26 310,19 322,26 500,26 508,21 516,26 550,26 560,15 566,39 572,0 578,33 584,26 620,26 630,19 642,26 900,26"/>
+    <!-- 发光底衬 -->
+    <polyline class="ecg-glow" points="0,52 180,52 190,45 200,52 240,52 250,46 256,50 262,70 268,26 274,62 280,52 320,52 332,43 346,52 500,52 510,45 520,52 560,52 570,46 576,50 582,70 588,26 594,62 600,52 640,52 652,43 666,52 900,52"/>
+    <!-- 主导联：带 P 波-QRS-T 波的完整心动周期 -->
+    <polyline class="ecg-line" points="0,52 180,52 190,45 200,52 240,52 250,46 256,50 262,70 268,26 274,62 280,52 320,52 332,43 346,52 500,52 510,45 520,52 560,52 570,46 576,50 582,70 588,26 594,62 600,52 640,52 652,43 666,52 900,52"/>
   </svg>
 </header>
 {% endif %}
@@ -213,7 +253,7 @@
 <footer>
   <svg class="f-ecg" width="120" height="16" viewBox="0 0 120 16" aria-hidden="true"><polyline points="0,8 44,8 50,2 56,13 62,1 68,12 72,8 120,8" fill="none" stroke="#A8E6CF" stroke-width="2" stroke-linecap="round"/></svg>
   北京航空航天大学 · 医学科学与工程学院 · 254511班<br>
-  <span style="font-size:12px;opacity:.75">由侯宝琪维护 · Powered by GitHub Pages</span>
+  <span style="font-size:12px;opacity:.75">由班级学习委员维护 · Powered by GitHub Pages</span>
 </footer>
 
 </body>
