@@ -1,220 +1,210 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{{ page.title | default: site.title }} - {{ site.title }}</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ page.title }} · {{ site.title }}</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231A5E7A'/%3E%3Cpolyline points='6,34 20,34 26,22 32,44 38,16 44,40 48,34 58,34' fill='none' stroke='%23A8E6CF' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-    background: #f5f6f8;
-    color: #2c3e50;
-    line-height: 1.75;
-    -webkit-font-smoothing: antialiased;
+  :root{
+    --teal-900:#0C3341;
+    --teal-700:#1A5E7A;
+    --teal-500:#2E7D96;
+    --mint:#A8E6CF;
+    --mint-strong:#4CAF8D;
+    --mint-bg:#F0F7F3;
+    --ink:#12332C;
+    --muted:#5F7D75;
+    --card:#FFFFFF;
   }
-  .container { max-width: 760px; margin: 0 auto; padding: 20px 16px 60px; }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:
+      radial-gradient(circle at 12% 8%, rgba(168,230,207,.35), transparent 34%),
+      radial-gradient(circle at 88% 90%, rgba(46,125,150,.12), transparent 40%),
+      var(--mint-bg);
+    color:var(--ink);
+    line-height:1.75;
+  }
+  .wrap{max-width:880px;margin:0 auto;padding:0 20px}
 
-  /* 顶部导航栏 */
-  .navbar {
-    background: #fff;
-    border-radius: 14px;
-    padding: 10px 14px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex-wrap: wrap;
+  /* ===== 顶部导航 ===== */
+  .navbar{
+    position:sticky;top:0;z-index:50;
+    background:rgba(255,255,255,.82);
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+    border-bottom:1px solid rgba(26,94,122,.12);
   }
-  .navbar .brand {
-    font-weight: 700;
-    font-size: 15px;
-    color: #1e5799;
-    margin-right: 8px;
-    text-decoration: none;
+  .nav-inner{max-width:880px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:18px}
+  .brand{display:flex;align-items:center;gap:9px;font-weight:800;font-size:16px;color:var(--teal-900);text-decoration:none;letter-spacing:.5px}
+  .brand svg{flex:none}
+  .nav-links{margin-left:auto;display:flex;gap:6px}
+  .nav-links a{
+    text-decoration:none;color:var(--muted);font-size:14px;font-weight:600;
+    padding:7px 16px;border-radius:999px;transition:all .18s;
   }
-  .navbar a.tab {
-    font-size: 13px;
-    color: #5d6d7e;
-    text-decoration: none;
-    padding: 6px 12px;
-    border-radius: 999px;
-    transition: all .15s;
-  }
-  .navbar a.tab:hover { background: #eef4fb; color: #1e5799; }
-  .navbar a.tab.active { background: #1e5799; color: #fff; }
+  .nav-links a:hover{color:var(--teal-700);background:rgba(168,230,207,.35)}
+  .nav-links a.active{color:#fff;background:linear-gradient(135deg,var(--teal-700),var(--mint-strong));box-shadow:0 2px 8px rgba(26,94,122,.3)}
 
-  /* 顶部横幅 */
-  .banner {
-    background: linear-gradient(135deg, #1e5799 0%, #2d80c9 60%, #3ba0e0 100%);
-    color: #fff;
-    border-radius: 16px;
-    padding: 28px 24px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 16px rgba(30, 87, 153, 0.25);
+  /* ===== 横幅 ===== */
+  .hero{
+    position:relative;overflow:hidden;
+    margin-top:24px;border-radius:24px;
+    padding:44px 40px 92px;
+    background:linear-gradient(130deg,var(--teal-900) 0%,var(--teal-700) 55%,#2E7D6E 100%);
+    color:#fff;
+    box-shadow:0 14px 34px rgba(12,51,65,.28);
   }
-  .banner h1 { font-size: 22px; font-weight: 700; letter-spacing: 1px; }
-  .banner p { font-size: 13px; opacity: 0.92; margin-top: 6px; }
-  .banner .hint {
-    display: inline-block;
-    margin-top: 12px;
-    font-size: 12px;
-    background: rgba(255,255,255,0.18);
-    border: 1px solid rgba(255,255,255,0.35);
-    border-radius: 999px;
-    padding: 4px 12px;
+  .hero::before{
+    content:"";position:absolute;right:-90px;top:-90px;width:280px;height:280px;border-radius:50%;
+    background:radial-gradient(circle,rgba(168,230,207,.22),transparent 70%);
   }
-
-  /* 内容区 */
-  .content { background: #fff; border-radius: 16px; padding: 26px 24px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-
-  /* 一周/一条一个卡片标题 */
-  .content h1 {
-    font-size: 19px;
-    color: #1e5799;
-    padding-bottom: 10px;
-    margin: 36px 0 16px;
-    border-bottom: 2px solid #e8eef5;
+  .hero h1{margin:0 0 8px;font-size:34px;font-weight:800;letter-spacing:1px}
+  .hero .sub{margin:0;font-size:15px;color:var(--mint);font-weight:500;letter-spacing:2px}
+  .org-badge{
+    display:inline-flex;align-items:center;gap:7px;margin-top:18px;
+    padding:7px 16px;border-radius:999px;font-size:13px;font-weight:600;
+    background:rgba(255,255,255,.12);border:1px solid rgba(168,230,207,.4);color:var(--mint);
   }
-  .content h1:first-child { margin-top: 0; }
-  .content h2 { font-size: 16px; margin: 22px 0 10px; color: #34495e; }
-  .content h3 { font-size: 14px; margin: 16px 0 8px; color: #34495e; }
+  .hero .ecg{position:absolute;left:0;right:0;bottom:-4px;width:100%;height:72px;display:block}
+  .ecg-line{
+    fill:none;stroke:var(--mint);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;
+    filter:drop-shadow(0 0 5px rgba(168,230,207,.8));
+    stroke-dasharray:1400;stroke-dashoffset:1400;
+    animation:ecg-run 6s linear infinite;
+  }
+  .ecg-line.dim{stroke:rgba(168,230,207,.28);stroke-width:2;filter:none;animation:none;stroke-dasharray:none;stroke-dashoffset:0}
+  @keyframes ecg-run{to{stroke-dashoffset:-1400}}
+  @media (prefers-reduced-motion:reduce){.ecg-line{animation:none;stroke-dashoffset:0}}
 
-  /* 正文与列表 */
-  .content p, .content li { font-size: 15px; }
-  .content ul, .content ol { padding-left: 22px; margin: 8px 0; }
+  /* ===== 正文卡片 ===== */
+  .card{
+    background:var(--card);border-radius:22px;
+    padding:14px 36px 38px;margin:24px 0 46px;
+    box-shadow:0 8px 26px rgba(13,59,71,.09);
+  }
+  h2{
+    display:flex;align-items:center;gap:11px;
+    font-size:20px;font-weight:800;color:var(--teal-700);
+    margin:34px 0 16px;padding:13px 18px;
+    background:linear-gradient(90deg,rgba(26,94,122,.10),rgba(168,230,207,.18) 65%,transparent);
+    border-left:5px solid var(--teal-700);
+    border-radius:12px;
+  }
+  h3{color:var(--teal-700);margin:24px 0 10px}
+  a{color:var(--teal-700);font-weight:600;text-decoration:none;border-bottom:2px solid rgba(168,230,207,.9);transition:background .15s}
+  a:hover{background:rgba(168,230,207,.3);border-bottom-color:var(--teal-700)}
+  a.dl-btn{border-bottom:none}
+
+  /* 列表 */
+  ul,ol{padding-left:8px;list-style:none;margin:14px 0}
+  ul li,ol li{position:relative;padding:7px 0 7px 26px}
+  ul li::before{
+    content:"";position:absolute;left:6px;top:17px;width:8px;height:8px;border-radius:50%;
+    background:var(--mint-strong);
+  }
+  li strong{
+    display:inline-block;margin-right:8px;padding:1px 12px;border-radius:999px;
+    background:#E2F3EA;color:#14594F;font-size:13px;font-weight:700;
+  }
 
   /* 表格 */
-  .content table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 14px 0 20px;
-    font-size: 14px;
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
+  table{
+    width:100%;border-collapse:separate;border-spacing:0;
+    margin:18px 0 8px;font-size:14.5px;
+    border:1px solid rgba(26,94,122,.14);border-radius:14px;overflow:hidden;
   }
-  .content th {
-    background: #eef4fb;
-    color: #1e5799;
-    font-weight: 600;
-    padding: 10px 12px;
-    border: 1px solid #dde7f2;
-    text-align: left;
+  thead th{
+    background:linear-gradient(90deg,var(--teal-700),var(--teal-500));
+    color:#fff;font-weight:700;padding:12px 16px;text-align:left;letter-spacing:.5px;
   }
-  .content td {
-    padding: 10px 12px;
-    border: 1px solid #e5ecf4;
-    vertical-align: top;
-  }
-  .content tr:nth-child(even) td { background: #fafcfe; }
-  .content th:first-child, .content td:first-child { white-space: normal; min-width: 84px; }
+  tbody td{padding:12px 16px;border-top:1px solid rgba(26,94,122,.10)}
+  tbody tr:nth-child(even){background:#F5FAF7}
+  tbody tr:hover{background:rgba(168,230,207,.22)}
 
-  /* 截止/新标志章 */
-  .due {
-    display: inline-block;
-    background: #fdecea;
-    color: #c0392b;
-    font-size: 12px;
-    font-weight: 600;
-    border-radius: 6px;
-    padding: 2px 8px;
-    white-space: nowrap;
-  }
-  .due.ok { background: #e8f6ee; color: #27ae60; }
-  .new {
-    display: inline-block;
-    background: #fdecea;
-    color: #c0392b;
-    font-size: 11px;
-    font-weight: 700;
-    border-radius: 6px;
-    padding: 1px 7px;
-    margin-left: 6px;
-    vertical-align: middle;
-    white-space: nowrap;
-  }
-
-  /* 截图区 */
-  .content img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 10px;
-    border: 1px solid #e5e9ef;
-    margin: 10px 0 4px;
-    display: block;
-  }
-  .img-caption { font-size: 12px; color: #95a5a6; text-align: center; margin-bottom: 18px; }
+  /* 徽章 */
+  .deadline{display:inline-block;padding:3px 12px;border-radius:999px;font-size:12.5px;font-weight:700;background:#FDECEC;color:#C0392B}
+  .done{display:inline-block;padding:3px 12px;border-radius:999px;font-size:12.5px;font-weight:700;background:#E2F3EA;color:#14594F}
+  .tbd{color:var(--muted);font-size:13px}
+  .new-badge{display:inline-block;padding:2px 10px;border-radius:999px;font-size:11.5px;font-weight:800;background:var(--mint-strong);color:#fff;margin-left:8px;vertical-align:2px}
 
   /* 提示框 */
-  .notice {
-    background: #fff8e6;
-    border-left: 4px solid #f5b301;
-    border-radius: 8px;
-    padding: 12px 14px;
-    font-size: 14px;
-    margin: 14px 0;
+  .notice,.dl-tip{
+    background:linear-gradient(90deg,#E9F7EF,#F4FBF7);
+    border-left:4px solid var(--mint-strong);
+    border-radius:12px;padding:13px 16px;font-size:14px;color:#1B4D42;margin:16px 0;
   }
 
-   /* 下载按钮 */
-  .dl-btn {
-    display: inline-block;
-    background: #eef4fb;
-    color: #1e5799;
-    font-size: 14px;
-    font-weight: 600;
-    text-decoration: none;
-    border: 1px solid #c9dbef;
-    border-radius: 10px;
-    padding: 10px 18px;
-    margin: 6px 8px 6px 0;
-    transition: all .15s;
+  /* 下载按钮 */
+  .dl-btn{
+    display:inline-flex;align-items:center;gap:9px;
+    background:linear-gradient(135deg,var(--teal-700),var(--mint-strong));
+    color:#fff;font-size:15px;font-weight:700;
+    padding:13px 26px;border-radius:999px;margin:8px 12px 8px 0;
+    box-shadow:0 5px 14px rgba(26,94,122,.28);
+    transition:transform .16s, box-shadow .16s;
   }
-  .dl-btn:hover {
-    background: #1e5799;
-    color: #fff;
-    border-color: #1e5799;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 10px rgba(30,87,153,0.18);
-  }
-  .dl-tip {
-    background: #fff8e6;
-    border-left: 4px solid #f5b301;
-    border-radius: 8px;
-    padding: 10px 12px;
-    font-size: 13px;
-    color: #7a6a3a;
-    margin-top: 14px;
-  }
+  .dl-btn:hover{transform:translateY(-2px);box-shadow:0 9px 20px rgba(26,94,122,.36);background:linear-gradient(135deg,#226E8E,#5BC9A6)}
+  .dl-btn:active{transform:translateY(0)}
 
-  footer {
-    text-align: center;
-    font-size: 12px;
-    color: #b0b8c1;
-    margin-top: 36px;
+  footer{
+    text-align:center;padding:26px 0 40px;color:var(--muted);font-size:13px;
+  }
+  footer .f-ecg{display:block;margin:0 auto 10px}
+
+  @media (max-width:640px){
+    .hero{padding:32px 24px 78px}
+    .hero h1{font-size:25px}
+    .card{padding:8px 20px 30px}
+    table{font-size:13px}
+    thead th,tbody td{padding:9px 10px}
+    .nav-inner{gap:8px}
+    .nav-links a{padding:6px 11px;font-size:13px}
   }
 </style>
 </head>
 <body>
-<div class="container">
-  <nav class="navbar">
-    <a class="brand" href="{{ '/' | relative_url }}">📘 254511班学习主页</a>
-    <a class="tab {% if page.nav == 'homework' %}active{% endif %}" href="{{ '/homework.html' | relative_url }}">每周作业</a>
-    <a class="tab {% if page.nav == 'notices' %}active{% endif %}" href="{{ '/notices.html' | relative_url }}">学习通知</a>
-  </nav>
 
-  {% if page.show_banner %}
-  <div class="banner">
-    <h1>📘 {{ site.title }}</h1>
-    <p>{{ site.description }}</p>
+<nav class="navbar">
+  <div class="nav-inner">
+    <a class="brand" href="{{ '/' | relative_url }}">
+      <svg width="30" height="30" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#1A5E7A"/><polyline points="6,34 20,34 26,22 32,44 38,16 44,40 48,34 58,34" fill="none" stroke="#A8E6CF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      {{ site.title }}
+    </a>
+    <div class="nav-links">
+      <a href="{{ '/' | relative_url }}" {% if page.nav == "home" %}class="active"{% endif %}>🏠 首页</a>
+      <a href="{{ 'homework.html' | relative_url }}" {% if page.nav == "homework" %}class="active"{% endif %}>📚 每周作业</a>
+      <a href="{{ 'notices.html' | relative_url }}" {% if page.nav == "notices" %}class="active"{% endif %}>📢 学习通知</a>
+    </div>
   </div>
-  {% endif %}
+</nav>
 
-  <div class="content">
+{% if page.show_banner %}
+<header class="hero wrap">
+  <h1>📘 {{ site.title }}</h1>
+  <p class="sub">每周作业 · 学习通知 · 一站直达</p>
+  <span class="org-badge">🚀 北京航空航天大学 · 医学科学与工程学院</span>
+  <svg class="ecg" viewBox="0 0 900 72" preserveAspectRatio="none" aria-hidden="true">
+    <polyline class="ecg-line dim" points="0,44 260,44 272,44 280,26 290,58 300,8 310,52 318,44 560,44 572,44 580,26 590,58 600,8 610,52 618,44 900,44"/>
+    <polyline class="ecg-line" points="0,44 260,44 272,44 280,26 290,58 300,8 310,52 318,44 560,44 572,44 580,26 590,58 600,8 610,52 618,44 900,44"/>
+  </svg>
+</header>
+{% endif %}
+
+<main class="wrap">
+  <div class="card content">
     {{ content }}
   </div>
-  <footer>由侯宝琪维护 · 欢迎提出宝贵意见</footer>
-</div>
+</main>
+
+<footer>
+  <svg class="f-ecg" width="120" height="16" viewBox="0 0 120 16" aria-hidden="true"><polyline points="0,8 44,8 50,2 56,13 62,1 68,12 72,8 120,8" fill="none" stroke="#A8E6CF" stroke-width="2" stroke-linecap="round"/></svg>
+  北京航空航天大学 · 医学科学与工程学院 · 254511班<br>
+  <span style="font-size:12px;opacity:.75">由班级学习委员维护 · Powered by GitHub Pages</span>
+</footer>
+
 </body>
 </html>
