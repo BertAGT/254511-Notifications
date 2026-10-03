@@ -165,6 +165,73 @@
     border-radius:12px;padding:13px 16px;font-size:14px;color:#1B4D42;margin:16px 0;
   }
 
+  /* ===== 通知页专属：每条通知一张卡 ===== */
+  /* 标题栏：深青渐变横幅卡头 */
+  .page-notices .content h1{
+    display:flex;align-items:center;flex-wrap:wrap;gap:10px;
+    font-size:19px;font-weight:800;letter-spacing:.5px;line-height:1.5;
+    margin:36px 0 0;padding:15px 22px;
+    color:#fff;
+    background:
+      radial-gradient(120% 140% at 15% 0%, rgba(255,255,255,.14), transparent 55%),
+      linear-gradient(135deg,var(--teal-700) 0%,var(--teal-500) 70%,#2E7D6E 100%);
+    border-radius:16px;
+    box-shadow:0 8px 18px -8px rgba(26,94,122,.55);
+    text-shadow:0 1px 2px rgba(0,0,0,.22);
+  }
+  .page-notices .content h1:first-child{margin-top:10px}
+  /* **NEW** 标记 → 薄荷绿发光徽章（呼吸动画） */
+  .page-notices .content h1 strong{
+    display:inline-flex;align-items:center;
+    font-size:11px;font-weight:800;letter-spacing:1.5px;
+    padding:3px 12px;border-radius:999px;
+    background:var(--mint);color:var(--teal-900);text-shadow:none;
+    animation:new-pulse 2s ease-in-out infinite;
+  }
+  @keyframes new-pulse{
+    0%,100%{box-shadow:0 0 0 3px rgba(168,230,207,.30),0 0 10px rgba(168,230,207,.65)}
+    50%{box-shadow:0 0 0 6px rgba(168,230,207,.14),0 0 18px rgba(168,230,207,.95)}
+  }
+  @media (prefers-reduced-motion:reduce){.page-notices .content h1 strong{animation:none}}
+  /* 内容面板：浅绿底 + 薄荷左边条，与标题卡形成一体感 */
+  .page-notices .content ul{
+    background:linear-gradient(180deg,#F7FBF9,#F1F8F4);
+    border-left:4px solid var(--mint-strong);
+    border-radius:4px 14px 14px 4px;
+    margin:12px 0 6px;padding:10px 24px 14px;
+  }
+  .page-notices .content > p{
+    background:linear-gradient(180deg,#F7FBF9,#F1F8F4);
+    border-left:4px solid var(--mint-strong);
+    border-radius:4px 14px 14px 4px;
+    margin:12px 0;padding:10px 20px;
+  }
+  /* 通知之间的分隔线：居中渐变短线 */
+  .page-notices .content hr{
+    border:none;height:3px;width:130px;margin:36px auto;
+    background:linear-gradient(90deg,transparent,var(--mint-strong),transparent);
+    border-radius:3px;
+  }
+  /* 附件链接（.pdf/.zip/.doc 等）→ 虚线边框文件芯片 */
+  .page-notices a[href$=".pdf"],.page-notices a[href$=".zip"],
+  .page-notices a[href$=".doc"],.page-notices a[href$=".docx"],
+  .page-notices a[href$=".xlsx"]{
+    display:inline-flex;align-items:center;gap:7px;
+    background:#fff;border:1.5px dashed var(--mint-strong);border-radius:10px;
+    padding:7px 14px;margin:4px 8px 4px 0;font-size:13.5px;font-weight:600;
+    color:var(--teal-700);text-decoration:none;
+    box-shadow:0 2px 6px rgba(13,59,71,.06);
+    transition:all .15s;
+  }
+  .page-notices a[href$=".pdf"]:hover,.page-notices a[href$=".zip"]:hover,
+  .page-notices a[href$=".doc"]:hover,.page-notices a[href$=".docx"]:hover,
+  .page-notices a[href$=".xlsx"]:hover{
+    border-style:solid;background:var(--mint-bg);transform:translateY(-1px);
+  }
+  .page-notices a[href$=".pdf"]::before,.page-notices a[href$=".zip"]::before,
+  .page-notices a[href$=".doc"]::before,.page-notices a[href$=".docx"]::before,
+  .page-notices a[href$=".xlsx"]::before{content:"📎"}
+
   /* 图片自适应：不管原图多大，都缩到卡片宽度内 */
   .content img{
     max-width:100%;
@@ -212,7 +279,7 @@
   }
 </style>
 </head>
-<body>
+<body class="page-{{ page.nav }}">
 
 <nav class="navbar">
   <div class="nav-inner">
