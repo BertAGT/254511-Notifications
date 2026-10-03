@@ -17,6 +17,8 @@ show_banner: true
 
 ## 🏠 最新动态
 
+- **10.03** 26秋 第 4 周已更新 → [查看](homework.html)
+
 - **9.25** 第 3 周作业已更新 → [查看](homework.html)
 - **9.25** 全国大学生数学竞赛报名通知 → [查看](notices.html)
 
