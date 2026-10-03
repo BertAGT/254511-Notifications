@@ -4,7 +4,7 @@
 作业自动发布机器人的核心脚本
 =================================
 作用：读取学委填写的 Issue 表单内容，自动把新一周的作业
-      插入到 homework.md 顶部（旧作业自动往下沉留档），
+      写入 homework.md 的"每周作业区"（旧周直接被替换，不留档），
       并在 index.md 的"最新动态"里加一条记录。
 
 工作原理（给学委的编程小课堂 🧬）：
@@ -33,10 +33,17 @@ def parse_section(body: str, label: str) -> str:
     """
     pattern = r"###\s*" + re.escape(label) + r"\s*\n+(.*?)(?=\n###|\Z)"
     match = re.search(pattern, body, re.S)
-    return match.group(1).strip() if match else ""
+    if not match:
+        return ""
+    # 防止把下一个栏目的"### 标题"吞进来（比如某栏留空时）
+    lines = [
+        line for line in match.group(1).splitlines()
+        if not line.strip().startswith("###")
+    ]
+    return "\n".join(lines).strip()
 
 
-def build_week_block(week: str, items: str, notes: str, screenshot: str) -> str:
+def build_week_block(week: str, items: str, notes: str) -> str:
     """把表单内容拼装成一周的 Markdown 板块。"""
     lines = [f"# 📅 {week}", ""]
 
@@ -58,16 +65,15 @@ def build_week_block(week: str, items: str, notes: str, screenshot: str) -> str:
         subject, task, due = parts[0], parts[1], parts[2]
         if not subject:
             continue
-        due_cell = f'<span class="due">{due}</span>' if due else "——"
+        # 截止时间留空 → 显示"以老师通知为准"；填了 → 红色徽章
+        due_cell = (
+            f'<span class="deadline">{due}</span>'
+            if due
+            else '<span class="tbd">以老师通知为准</span>'
+        )
         lines.append(f"| {subject} | {task} | {due_cell} |")
 
     lines.append("")
-
-    if screenshot:
-        lines.append("### 🖼 Numbers 截图备份")
-        lines.append("")
-        lines.append(screenshot)
-        lines.append("")
 
     lines.append("---")
     lines.append("")
@@ -155,7 +161,6 @@ if __name__ == "__main__":
     week = parse_section(body, "周次")
     items = parse_section(body, "作业列表")
     notes = parse_section(body, "特别提醒（可选）")
-    screenshot = parse_section(body, "Numbers 截图（可选）")
 
     if not week or not items:
         raise SystemExit(f"表单信息不全：周次={week!r}，作业列表为空={not items}")
@@ -163,7 +168,7 @@ if __name__ == "__main__":
     print(f"本周：{week}")
     print(f"课程数：{len([l for l in items.splitlines() if l.strip() and not l.strip().startswith('```')])}")
 
-    block = build_week_block(week, items, notes, screenshot)
+    block = build_week_block(week, items, notes)
     update_homework(block, "homework.md")
     update_index(week, "index.md")
     print("✅ homework.md 与 index.md 更新完成")
