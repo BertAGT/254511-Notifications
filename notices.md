@@ -13,7 +13,7 @@ nav: notices
 - 请符合评奖条件且有参评意愿的同学，认真阅读文件并完成审批表、汇总表和成绩查询表填写。文件本体命名方式为【学号-姓名-文件名】，如“22101030-张涵帧-国奖审批表”“22101030-张涵帧-国励志汇总表”；文件压缩包命名方式为【学号-姓名-国奖/国励志申请】，如“22101030-张涵帧-国奖申请”。
 - **提交方式**：微信提交给帧导
 - **截止时间**：10.4 20:00
-- **附件**：[【模板】医学科学与工程学院成绩查询申请表（试行）-学号-姓名.pdf](https://github.com/user-attachments/files/32999375/-.-.pdf) [国奖国励志申请.zip](https://github.com/user-attachments/files/32999373/default.zip)
+- **附件**：[【模板】医学科学与工程学院成绩查询申请表（试行）-学号-姓名.pdf](https://github.com/user-attachments/files/32999375/-.-.pdf)[国奖国励志申请.zip](https://github.com/user-attachments/files/32999373/default.zip)
 
 ---
 
