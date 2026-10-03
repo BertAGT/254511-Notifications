@@ -12,7 +12,7 @@ show_banner: true
 <a href="https://raw.githubusercontent.com/BertAGT/254511-Notifications/main/files/leave-school-form.doc" class="dl-btn">🏫 离校备案表（Word）</a>
 
 <div class="dl-tip">
-💡 若打不开，请使用浏览器下载。
+💡 请使用浏览器打开网站后下载。
 </div>
 
 ## 🏠 最新动态
