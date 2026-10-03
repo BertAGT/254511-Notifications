@@ -46,10 +46,3 @@ body:
       label: 特别提醒（可选）
       description: 会被放进黄色提醒框，没有就不填
       placeholder: 数学小测改到周四，范围第 3 章
-
-  - type: textarea
-    id: screenshot
-    attributes:
-      label: Numbers 截图（可选）
-      description: 直接把截图粘贴到这个输入框里（Cmd+V），会自动上传
-      placeholder: （直接粘贴图片即可）
