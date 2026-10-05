@@ -27,9 +27,35 @@
   body{
     margin:0;
     font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
-    background:var(--mint-bg);
+    /* 科技感背景：32px 细网格 + 160px 主网格（蓝图/示波器坐标纸质感） */
+    background:
+      linear-gradient(rgba(26,94,122,.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(26,94,122,.05) 1px, transparent 1px),
+      linear-gradient(rgba(26,94,122,.075) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(26,94,122,.075) 1px, transparent 1px),
+      var(--mint-bg);
+    background-size:32px 32px,32px 32px,160px 160px,160px 160px,auto;
     color:var(--ink);
     line-height:1.85;
+  }
+  /* 极光氛围层：缓慢漂移的薄荷/深青柔光 */
+  body::before{
+    content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:
+      radial-gradient(ellipse 60% 45% at 75% -8%, rgba(168,230,207,.32), transparent 62%),
+      radial-gradient(ellipse 50% 40% at 10% 90%, rgba(46,125,150,.12), transparent 60%);
+    animation:aurora 26s ease-in-out infinite alternate;
+  }
+  @keyframes aurora{
+    from{transform:translate(0,0) scale(1)}
+    to{transform:translate(3%,-2%) scale(1.07)}
+  }
+  @media (prefers-reduced-motion:reduce){body::before{animation:none}}
+  /* 顶部渐变光带：3px 的现代细节 */
+  body::after{
+    content:"";position:fixed;top:0;left:0;right:0;height:3px;z-index:60;
+    background:linear-gradient(90deg,var(--teal-700),var(--mint-strong) 55%,var(--mint));
+    pointer-events:none;
   }
   .wrap{max-width:880px;margin:0 auto;padding:0 20px}
 
@@ -250,6 +276,8 @@
   @media print{
     .navbar,.hero,footer,.ecg{display:none!important}
     body{background:#fff}
+    body::before{display:none}
+    body::after{display:none}
     .card{
       box-shadow:none;border:none;padding:0;margin:0;
       border-radius:0;max-width:100%;
