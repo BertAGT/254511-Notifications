@@ -17,10 +17,7 @@ show_banner: true
 
 ## 🏠 最新动态
 
-- **10.10** 26秋 第 5 周已更新 → [查看](homework.html)
-
-- **10.3** 第4周作业已更新 → [查看](homework.html)
-- **10.3** 国奖国励志通知已更新 → [查看](notices.html)
+- **10.10** 第5周作业已更新 → [查看](homework.html)
 
 ## ❓ 使用说明
 
