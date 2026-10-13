@@ -6,7 +6,7 @@ show_banner: true
 
 ## 📄 常用表格下载
 
-导员要求的常用表格，点按钮直接下载 ↓
+常用表格点按钮直接下载 ↓
 
 <a href="https://raw.githubusercontent.com/BertAGT/254511-Notifications/main/files/leave-application.xlsx" class="dl-btn">📋 请假条（Excel）</a>
 <a href="https://raw.githubusercontent.com/BertAGT/254511-Notifications/main/files/leave-school-form.doc" class="dl-btn">🏫 离校备案表（Word）</a>
@@ -17,6 +17,7 @@ show_banner: true
 
 ## 🏠 最新动态
 
+- **10.13** 北京市大学生生物学竞赛通知已更新 → [查看](notices.html)
 - **10.10** 第5周作业已更新 → [查看](homework.html)
 
 ## ❓ 使用说明
