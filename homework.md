@@ -8,8 +8,6 @@ nav: homework
 
 # 📅 26秋 第 6 周
 
-<div class="notice">📌 _No response_</div>
-
 | 科目 | 作业内容 | 截止时间 |
 |------|----------|----------|
 | 概率统计B | 习题2.3：1、2、3、4、5、6 习题2.4：1、2、3、4、5、6 | <span class="deadline">10.20 23:59</span> |
