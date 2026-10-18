@@ -6,7 +6,7 @@ show_banner: true
 
 ## 📄 常用表格下载
 
-常用表格点按钮直接下载 ↓
+点按钮直接下载 ↓
 
 <a href="https://raw.githubusercontent.com/BertAGT/254511-Notifications/main/files/leave-application.xlsx" class="dl-btn">📋 请假条（Excel）</a>
 <a href="https://raw.githubusercontent.com/BertAGT/254511-Notifications/main/files/leave-school-form.doc" class="dl-btn">🏫 离校备案表（Word）</a>
@@ -22,5 +22,5 @@ show_banner: true
 
 ## ❓ 使用说明
 
-- 作业和通知分开发布，互不刷屏。作业每周五晚更新，学习通知随发随更
+- 作业和通知分开发布，互不刷屏。作业周末更新，学习通知随发随更
 - 点击首页上方导航即可跳转作业/通知页面
