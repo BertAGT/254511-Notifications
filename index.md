@@ -17,6 +17,8 @@ show_banner: true
 
 ## 🏠 最新动态
 
+- **10.18** 26秋 第 6 周已更新 → [查看](homework.html)
+
 - **10.13** 北京市大学生生物学竞赛通知已更新 → [查看](notices.html)
 - **10.10** 第5周作业已更新 → [查看](homework.html)
 
