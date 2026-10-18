@@ -21,6 +21,31 @@ import re
 from datetime import date
 
 
+# GitHub 表单某项没填时，会自动往正文里塞占位文本，
+# 脚本要把它们统统当成"空"，否则网页上会渲染出难看的占位符。
+EMPTY_TOKENS = {
+    "",
+    "no response",
+    "noresponse",
+    "none",
+    "n/a",
+    "na",
+    "-",
+    "--",
+    "无",
+}
+
+
+def clean(value: str) -> str:
+    """把 GitHub 的"没填"占位符统一识别为空值。"""
+    text = (value or "").strip()
+    if not text:
+        return ""
+    # "_No response_" → 去掉两端下划线/星号（Markdown 斜体）再比对
+    probe = text.strip("_").strip("*").strip().lower()
+    return "" if probe in EMPTY_TOKENS else text
+
+
 def parse_section(body: str, label: str) -> str:
     """从 Issue 正文里切出某个栏目的内容。
 
@@ -40,7 +65,7 @@ def parse_section(body: str, label: str) -> str:
         line for line in match.group(1).splitlines()
         if not line.strip().startswith("###")
     ]
-    return "\n".join(lines).strip()
+    return clean("\n".join(lines))
 
 
 def build_week_block(week: str, items: str, notes: str) -> str:
@@ -65,10 +90,10 @@ def build_week_block(week: str, items: str, notes: str) -> str:
         subject, task, due = parts[0], parts[1], parts[2]
         if not subject:
             continue
-        # 截止时间留空 → 显示"以老师通知为准"；填了 → 红色徽章
+        # 截止时间留空（或填了占位符）→ 显示"以老师通知为准"；填了 → 红色徽章
         due_cell = (
             f'<span class="deadline">{due}</span>'
-            if due
+            if clean(due)
             else '<span class="tbd">以老师通知为准</span>'
         )
         lines.append(f"| {subject} | {task} | {due_cell} |")
@@ -136,11 +161,18 @@ def update_index(week: str, index_path: str):
         print("index.md 不存在，跳过首页更新")
         return
 
-    today = date.today().strftime("%m.%d").lstrip("0")
+    today = date.today()
+    # 不补零：1.5 而非 01.05；10.3 而非 10.03
+    today_str = f"{today.month}.{today.day}"
     with open(index_path, "r", encoding="utf-8") as f:
         content = f.read()
 
-    new_line = f"- **{today}** {week}已更新 → [查看](homework.html)"
+    # 从"26秋 第 4 周"里抽出"第 4 周"，拼成「第 4 周作业已更新」；
+    # 抽不到（比如格式不标准）就退回原始 week 字符串。
+    m = re.search(r"第\s*(\d+)\s*周", week)
+    week_label = f"第{m.group(1)}周作业" if m else f"{week}作业"
+    new_line = f"- **{today_str}** {week_label}已更新 → [查看](homework.html)"
+
     anchor = "## 🏠 最新动态"
     if anchor in content:
         content = content.replace(
