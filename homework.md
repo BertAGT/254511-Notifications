@@ -26,8 +26,6 @@ nav: homework
 
 请大家在 <span class="deadline">十六周周末（12.27）22:00</span> 前上传国安作业到网盘。
 https://bhpan-443.e1.buaa.edu.cn/link/AAB21AC286D37F4241B31F7058CE9AE2F3
-文件夹名：254511国安作业
-有效期限：2026-12-27 22:00
 提取码：4au5
 课程考核说明：
 
