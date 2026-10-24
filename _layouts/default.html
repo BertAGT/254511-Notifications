@@ -81,7 +81,7 @@
   .wrap{max-width:880px;margin:0 auto;padding:0 20px}
 
   /* 数字统一等宽，避免倒计时/日期跳动 */
-  .tnum,#heroStatus,.deadline,.feed-meta,.hs-time,time{font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+  .tnum,.deadline,.feed-meta,time{font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
 
   /* ===== 顶部导航：单行固定高度，手机端不换行 ===== */
   .navbar{
@@ -129,7 +129,7 @@
     grid-template-areas:"main" "cta";
     align-items:start;
     gap:0;
-    padding:40px 40px 88px;
+    padding:40px 40px 96px;
     background:
       linear-gradient(rgba(168,230,207,.06) 1px, transparent 1px),
       linear-gradient(90deg, rgba(168,230,207,.06) 1px, transparent 1px),
@@ -137,12 +137,6 @@
     background-size:26px 26px,26px 26px,auto;
     color:#fff;
     box-shadow:0 10px 28px -16px rgba(12,51,65,.36);
-  }
-  /* 有截止数据时才展开成两栏，否则保持单栏紧凑 */
-  .hero.has-status{
-    grid-template-columns:minmax(0,1fr) 272px;
-    grid-template-areas:"main status" "cta status";
-    gap:0 36px;
   }
   .hero-main{grid-area:main;min-width:0}
   .hero-kicker{
@@ -177,39 +171,6 @@
   .btn-ghost{color:#fff;background:transparent;border:1px solid rgba(255,255,255,.30)}
   .btn-ghost:hover{background:rgba(255,255,255,.10);border-color:rgba(168,230,207,.65)}
 
-  /* 最近截止卡：首屏的信息焦点 */
-  .hero-status{
-    grid-area:status;align-self:center;
-    position:relative;
-    display:flex;flex-direction:column;gap:3px;
-    padding:18px 20px 19px 22px;border-radius:14px;
-    background:rgba(255,255,255,.075);
-    border:1px solid rgba(168,230,207,.28);
-    backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
-  }
-  .hero-status::before{
-    content:"";position:absolute;left:0;top:17px;bottom:17px;width:2px;
-    border-radius:2px;background:var(--mint);opacity:.85;
-  }
-  .hero-status[hidden]{display:none}
-  .hs-label{
-    font-size:10.5px;font-weight:700;letter-spacing:2px;
-    color:rgba(168,230,207,.8);margin-bottom:5px;
-  }
-  .hs-course{
-    font-size:13.5px;font-weight:600;color:#fff;line-height:1.5;
-    letter-spacing:.3px;overflow-wrap:anywhere;
-  }
-  .hs-time{
-    font-size:22px;font-weight:700;color:var(--mint);
-    letter-spacing:.4px;line-height:1.35;margin-top:2px;
-  }
-  .hs-note{font-size:11.5px;color:rgba(255,255,255,.52);letter-spacing:.3px;margin-top:5px}
-  .hero-status.is-soon .hs-time{color:#FFE0A8}
-  .hero-status.is-urgent .hs-time{color:#FFB4A2}
-  .hero-status.is-generic .hs-time{font-size:20px;font-weight:600;color:#fff;letter-spacing:.6px}
-  .hero-status.is-relative .hs-time{font-size:19px;font-weight:700;color:var(--mint);line-height:1.45}
-
   /* ECG 签名元素 */
   .hero .ecg{position:absolute;left:0;right:0;bottom:-4px;width:100%;height:78px;display:block}
   .ecg-glow{
@@ -223,12 +184,13 @@
   .ecg-line{
     fill:none;stroke:var(--mint);stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round;
     filter:drop-shadow(0 0 4px rgba(168,230,207,.85));
-    stroke-dasharray:var(--len,1200);stroke-dashoffset:var(--len,1200);
+    stroke-dasharray:1180;stroke-dashoffset:1180;
     animation:ecg-run 8s linear infinite;
   }
+  /* 描线动画：线条沿轨迹自己长出来，辉光随之点亮（无圆点、无光带） */
   @keyframes ecg-run{
-    from{stroke-dashoffset:var(--len,1200)}
-    to{stroke-dashoffset:calc(var(--len,1200) * -1)}
+    from{stroke-dashoffset:1180}
+    to{stroke-dashoffset:-1180}
   }
   @media (prefers-reduced-motion:reduce){.ecg-line{animation:none;stroke-dashoffset:0}}
 
@@ -501,23 +463,22 @@
      移动端：320 / 390 是关键宽度
      ============================================================ */
   @media (max-width:820px){
-    .hero,.hero.has-status{
+    .hero{
       grid-template-columns:1fr;
-      grid-template-areas:"main" "status" "cta";
+      grid-template-areas:"main" "cta";
       gap:0;
-      padding:28px 24px 78px;
+      padding:28px 24px 92px;
       margin-top:20px;
       border-radius:16px;
     }
     .hero h1{font-size:25px;letter-spacing:1.2px}
     .hero .sub{font-size:12.5px;letter-spacing:2px}
-    .hero-status{align-self:stretch;margin-top:22px}
     .hero-cta{margin-top:18px}
     .hero .ecg{height:64px}
     .card{padding:2px 22px 34px;margin:20px 0 40px}
     h2{font-size:17px;margin:34px 0 14px}
     .content{font-size:16px}
-    .wrap{padding:0 16px}
+    .wrap:not(.hero){padding:0 16px}
   }
 
   @media (max-width:640px){
@@ -558,13 +519,12 @@
   }
 
   @media (max-width:380px){
-    .wrap{padding:0 13px}
+    .wrap:not(.hero){padding:0 13px}
     .card{padding:2px 18px 30px}
-    .hero{padding:24px 18px 74px}
+    .hero{padding:24px 18px 88px}
     .hero h1{font-size:22px}
     .nav-links a{padding:8px 9px;font-size:12.5px;letter-spacing:.2px}
     .nav-inner{gap:4px}
-    .hs-time{font-size:20px}
     .content{font-size:15.5px}
     .page-notices .content h1{font-size:16px;padding:13px 16px;gap:8px}
     .page-homework .content h1{font-size:17px;padding:13px 16px}
@@ -572,7 +532,7 @@
 
   /* ===== 打印 ===== */
   @media print{
-    .navbar,.hero,footer,.ecg,.hero-status{display:none!important}
+    .navbar,.hero,footer,.ecg{display:none!important}
     body{background:#fff}
     body::before{display:none}
     body::after{display:none}
@@ -630,17 +590,10 @@
 {% if page.show_banner %}
 <header class="hero wrap">
   <div class="hero-main">
-    <p class="hero-kicker"><span id="heroWeek">北京航空航天大学 · 医工学院</span></p>
+    <p class="hero-kicker"><span id="heroWeek">26秋 · 第 7 周</span></p>
     <h1>{{ site.title }}</h1>
     <p class="sub">每周作业 · 学习通知 · 一站直达</p>
   </div>
-
-  <aside class="hero-status" id="heroStatus" hidden aria-live="polite" aria-atomic="true">
-    <span class="hs-label">最近截止</span>
-    <span class="hs-course" id="hsCourse"></span>
-    <span class="hs-time" id="hsTime"></span>
-    <span class="hs-note" id="hsNote"></span>
-  </aside>
 
   <div class="hero-cta">
     <a class="btn btn-primary" href="{{ 'homework.html' | relative_url }}">
@@ -680,14 +633,6 @@
   var m = body.className.match(/page-([a-z]+)/);
   var page = m ? m[1] : 'home';
   var NOW = new Date();
-
-  /* ---------- 0. 心电线：用真实路径长度驱动描线，节奏才连续 ---------- */
-  (function () {
-    var line = document.getElementById('ecgMain');
-    if (!line || !line.getTotalLength) return;
-    var len = Math.ceil(line.getTotalLength());
-    if (line.ownerSVGElement) line.ownerSVGElement.style.setProperty('--len', String(len));
-  })();
 
   /* ---------- 1. 去掉标题里的 emoji（统一视觉，改用排版符号） ---------- */
   var RE_EMOJI = /^[\s\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{2190}-\u{21FF}\u{FE0F}\u{200D}\u{20E3}]+/u;
@@ -754,151 +699,20 @@
   }
 
   /* ---------- 3. 首页：最近截止 + 周次 ---------- */
-  function parseDue(s) {
-    if (!s) return null;
-    var y = null, mo = null, d = null, mm;
-    mm = s.match(/(20\d{2})\s*[.\-\/年]\s*(\d{1,2})\s*[.\-\/月]\s*(\d{1,2})/);
-    if (mm) { y = +mm[1]; mo = +mm[2]; d = +mm[3]; }
-    else {
-      mm = s.match(/(\d{1,2})\s*[.\-\/月]\s*(\d{1,2})/);
-      if (mm) { mo = +mm[1]; d = +mm[2]; }
-    }
-    if (!mo || !d || mo > 12 || d > 31) return null;
-
-    var hh = 23, mi = 59;
-    var t = s.match(/(\d{1,2})\s*[:：]\s*(\d{2})/);
-    if (t) { hh = +t[1]; mi = +t[2]; }
-    else if (/中午/.test(s)) { hh = 12; mi = 0; }
-    else if (/上午/.test(s)) { hh = 9; mi = 0; }
-    else if (/晚/.test(s)) { hh = 20; mi = 0; }
-    if (hh > 23 || mi > 59) return null;
-
-    if (y === null) {
-      y = NOW.getFullYear();
-      var guess = new Date(y, mo - 1, d, hh, mi);
-      if (guess.getTime() < NOW.getTime() - 200 * 864e5) {
-        guess = new Date(y + 1, mo - 1, d, hh, mi);
-      }
-      return guess;
-    }
-    return new Date(y, mo - 1, d, hh, mi);
-  }
-
-  function fmtLeft(ms) {
-    if (ms <= 0) return { text: '已截止', cls: 'is-urgent' };
-    var h = ms / 36e5;
-    if (h < 1) return { text: Math.max(1, Math.round(ms / 6e4)) + ' 分钟', cls: 'is-urgent' };
-    if (h < 24) return { text: Math.floor(h) + ' 小时 ' + Math.round((h % 1) * 60) + ' 分', cls: 'is-urgent' };
-    var dd = Math.floor(h / 24), hh = Math.round(h % 24);
-    return {
-      text: dd + ' 天' + (hh ? ' ' + hh + ' 小时' : ''),
-      cls: dd < 3 ? 'is-soon' : ''
-    };
-  }
-
-  // “第七周”“第7周”“第十二周”都能抽出数字
-  function cnNum(s) {
-    var m = s.match(/第\s*([0-9]+|[一二三四五六七八九十]+)\s*周/);
-    if (!m) return 0;
-    var t = m[1];
-    if (/^\d+$/.test(t)) return +t;
-    var map = { '一': 1, '二': 2, '三': 3, '四': 4, '五': 5, '六': 6, '七': 7, '八': 8, '九': 9, '十': 10 };
-    if (t === '十') return 10;
-    if (t.length === 2 && t[0] === '十') return 10 + (map[t[1]] || 0);
-    if (t.length === 2 && t[1] === '十') return (map[t[0]] || 0) * 10;
-    if (t.length === 3) return (map[t[0]] || 0) * 10 + (map[t[2]] || 0);
-    return map[t] || 0;
-  }
-
-  if (page === 'home' && window.fetch && window.DOMParser) {
-    fetch('{{ '/homework.html' | relative_url }}', { cache: 'no-store' })
-      .then(function (r) { return r.ok ? r.text() : Promise.reject(); })
-      .then(function (html) {
-        var doc = new DOMParser().parseFromString(html, 'text/html');
-
-        // 周次
-        var h1 = doc.querySelector('.content h1');
-        var weekLabel = '';
-        if (h1) {
-          weekLabel = h1.textContent.replace(/^[\s\S]{0,3}?(?=\d|第)/, '').trim();
-          if (weekLabel && document.getElementById('heroWeek')) {
-            document.getElementById('heroWeek').textContent = weekLabel;
-          }
-        }
-
-        // 收集所有作业的截止信息
-        var rows = doc.querySelectorAll('.content table tbody tr');
-        var items = [];
-        var total = 0, firstCourse = '';
-        Array.prototype.forEach.call(rows, function (tr) {
-          var tds = tr.querySelectorAll('td');
-          if (tds.length < 3) return;
-          total++;
-          var course = tds[0].textContent.trim();
-          if (!firstCourse) firstCourse = course;
-          var dl = tds[2].querySelector('.deadline');
-          if (!dl) return;
-          var raw = dl.textContent.replace(/\s+/g, ' ').trim();
-          items.push({ course: course, raw: raw, due: parseDue(raw) });
-        });
-
-        // 当前周次（用来判断“第七周课前”是不是还没到）
-        var curWeek = cnNum(weekLabel);
-
-        // ① 精确日期且还没到 → 按时间取最近
-        var best = null;
-        items.forEach(function (it) {
-          if (!it.due || it.due.getTime() <= NOW.getTime()) return;
-          if (!best || it.due.getTime() < best.due.getTime()) best = it;
-        });
-
-        // ② 没有精确日期时，找“第 N 周”且 N > 当前周 → 显示原文
-        var rel = null;
-        if (!best) {
-          items.forEach(function (it) {
-            if (rel) return;
-            var n = cnNum(it.raw);
-            if (n && n > curWeek) rel = it;
-          });
-        }
-
-        var box = document.getElementById('heroStatus');
-        var hero = document.querySelector('.hero');
-        if (!box || !hero) return;
-
-        if (best) {
-          var left = fmtLeft(best.due.getTime() - NOW.getTime());
-          document.getElementById('hsCourse').textContent = best.course;
-          document.getElementById('hsTime').textContent = '还有 ' + left.text;
-          document.getElementById('hsNote').textContent =
-            '截止 ' + (best.due.getMonth() + 1) + ' 月 ' + best.due.getDate() + ' 日 ' +
-            ('0' + best.due.getHours()).slice(-2) + ':' + ('0' + best.due.getMinutes()).slice(-2);
-          box.className = 'hero-status ' + left.cls;
-        } else if (rel) {
-          // 只有“第七周课前”这类相对时间：显示原文，不硬编倒计时
-          var short = rel.raw.split(/[、，,；;]/)[0];
-          var wkNum = cnNum(rel.raw);
-          box.querySelector('.hs-label').textContent = '下次截止';
-          document.getElementById('hsCourse').textContent = rel.course;
-          document.getElementById('hsTime').textContent = short;
-          document.getElementById('hsNote').textContent =
-            wkNum ? '第 ' + wkNum + ' 周开始前 · 具体以老师通知为准' : '具体以老师通知为准';
-          box.className = 'hero-status is-relative';
-        } else if (total) {
-          // 截止全部已过，或写的是“第 N 周课前”这类相对时间 → 退化成周作业概览
-          box.querySelector('.hs-label').textContent = '本周作业';
-          document.getElementById('hsCourse').textContent = weekLabel || firstCourse;
-          document.getElementById('hsTime').textContent = total + ' 项';
-          document.getElementById('hsNote').textContent = '截止时间以老师通知为准';
-          box.className = 'hero-status is-generic';
-        } else {
-          return;
-        }
-        box.hidden = false;
-        hero.classList.add('has-status');
-      })
-      .catch(function () { /* 抓不到就保持隐藏，不影响阅读 */ });
-  }
+  /* ---------- 3. 周次：按日期自动推算，不在依赖作业页 ---------- */
+  // 基准：2026-10-26（周一）= 第 8 周，之后每逢周一自动 +1。
+  // 换学期时改这两行即可：BASE 改成新学期第 1 周的周一，BASE_WEEK 改成 1。
+  (function () {
+    var el = document.getElementById('heroWeek');
+    if (!el) return;
+    var BASE = new Date(2026, 9, 26);
+    var BASE_WEEK = 8;
+    var today = new Date(NOW.getFullYear(), NOW.getMonth(), NOW.getDate());
+    var days = Math.round((today.getTime() - BASE.getTime()) / 864e5);
+    var week = BASE_WEEK + Math.floor(days / 7);
+    if (week < 1) week = 1;
+    el.textContent = '26秋 · 第 ' + week + ' 周';
+  })();
 
   /* ---------- 4. 通知页：把 ddl 提成独立块 + 裸链接可点 ---------- */
   function linkLabel(url) {
