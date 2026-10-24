@@ -208,28 +208,29 @@
   .hero-status.is-soon .hs-time{color:#FFE0A8}
   .hero-status.is-urgent .hs-time{color:#FFB4A2}
   .hero-status.is-generic .hs-time{font-size:20px;font-weight:600;color:#fff;letter-spacing:.6px}
+  .hero-status.is-relative .hs-time{font-size:19px;font-weight:700;color:var(--mint);line-height:1.45}
 
   /* ECG 签名元素 */
   .hero .ecg{position:absolute;left:0;right:0;bottom:-4px;width:100%;height:78px;display:block}
   .ecg-glow{
-    fill:none;stroke:var(--mint);stroke-width:9;stroke-linecap:round;stroke-linejoin:round;
-    opacity:.16;filter:blur(5px);
+    fill:none;stroke:var(--mint);stroke-width:8;stroke-linecap:round;stroke-linejoin:round;
+    opacity:.17;filter:blur(6px);
   }
   .ecg-line.dim{
-    stroke:rgba(168,230,207,.20);stroke-width:1.5;filter:none;
+    stroke:rgba(168,230,207,.22);stroke-width:1.3;filter:none;
     animation:none;stroke-dasharray:none;stroke-dashoffset:0;
   }
   .ecg-line{
-    fill:none;stroke:var(--mint);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;
-    filter:drop-shadow(0 0 4px rgba(168,230,207,.8));
-    stroke-dasharray:1600;stroke-dashoffset:1600;
-    animation:ecg-run 7s linear infinite;
+    fill:none;stroke:var(--mint);stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round;
+    filter:drop-shadow(0 0 4px rgba(168,230,207,.85));
+    stroke-dasharray:var(--len,1200);stroke-dashoffset:var(--len,1200);
+    animation:ecg-run 8s linear infinite;
   }
-  @keyframes ecg-run{to{stroke-dashoffset:-1600}}
+  @keyframes ecg-run{
+    from{stroke-dashoffset:var(--len,1200)}
+    to{stroke-dashoffset:calc(var(--len,1200) * -1)}
+  }
   @media (prefers-reduced-motion:reduce){.ecg-line{animation:none;stroke-dashoffset:0}}
-  .ecg-dot{fill:var(--mint);filter:drop-shadow(0 0 6px rgba(168,230,207,.95))}
-  .ecg-dot-halo{fill:rgba(168,230,207,.4);filter:blur(3px)}
-  @media (prefers-reduced-motion:reduce){.ecg-dot,.ecg-dot-halo{display:none}}
 
   /* ===== 内容卡片 ===== */
   .card{
@@ -280,25 +281,49 @@
   .content ul li.num-item{padding-left:2px}
   .content ul li.num-item::before{display:none}
 
-  /* 表格 */
-  table{
-    width:100%;border-collapse:separate;border-spacing:0;
-    margin:18px 0 8px;font-size:15px;
-    border:1px solid var(--hairline);border-radius:10px;overflow:hidden;
-    table-layout:fixed;
+  /* ===== 作业表 → 作业卡（桌面手机同一套结构，只是列数不同） ===== */
+  .content table{
+    display:block;width:100%;border:none;border-radius:0;background:none;
+    margin:16px 0 8px;table-layout:auto;
   }
-  thead th{
-    background:var(--teal-700);color:#fff;font-weight:600;
-    padding:12px 16px;text-align:left;letter-spacing:1px;font-size:13.5px;
+  .content thead{display:none}
+  .content tbody{display:block}
+  .content tr{
+    display:grid;
+    grid-template-columns:minmax(164px,23%) minmax(0,1fr) auto;
+    gap:4px 24px;
+    align-items:start;
+    padding:15px 20px;
+    margin:0 0 10px;
+    background:#fff;
+    border:1px solid var(--hairline);
+    border-radius:12px;
+    transition:border-color .15s,box-shadow .15s,transform .15s;
   }
-  tbody td{
-    padding:13px 16px;border-top:1px solid rgba(26,94,122,.08);
-    vertical-align:top;
+  .content tr:hover{
+    border-color:var(--hairline-strong);
+    box-shadow:0 2px 10px -6px rgba(13,59,71,.24);
   }
-  thead th:nth-child(1),tbody td:nth-child(1){width:27%}
-  thead th:nth-child(3),tbody td:nth-child(3){width:23%}
-  tbody tr:nth-child(even){background:#F5FAF7}
-  tbody tr:hover{background:rgba(168,230,207,.16)}
+  .content td{
+    display:block;width:auto;padding:0;border:none;vertical-align:baseline;
+  }
+  .content td:nth-child(1){
+    font-weight:700;color:var(--teal-700);font-size:15.5px;
+    letter-spacing:.3px;line-height:1.65;
+  }
+  .content td:nth-child(2){
+    font-size:14.5px;color:var(--ink-soft);line-height:1.7;padding-top:1px;
+  }
+  .content td:nth-child(3){
+    justify-self:end;text-align:right;padding-top:1px;
+    white-space:nowrap;
+  }
+
+  /* 平板：课程与截止同一行，内容跨列 */
+  @media (max-width:780px){
+    .content tr{grid-template-columns:minmax(0,1fr) auto;gap:2px 14px;padding:14px 17px}
+    .content td:nth-child(2){grid-column:1/-1;padding-top:5px}
+  }
 
   /* 徽章 */
   .deadline{
@@ -502,39 +527,32 @@
     .brand svg{width:26px;height:26px}
     .nav-links a{padding:8px 11px;font-size:13px}
 
-    /* 表格 → 卡片（作业页阅读成本的关键修复） */
-    .content table{
-      display:block;border:none;border-radius:0;background:none;
-      margin:14px 0 6px;
+    /* 作业卡：窄屏收成单列，截止沉到底部 */
+    .content table{margin:14px 0 6px}
+    .content tr{
+      grid-template-columns:1fr;
+      gap:0;
+      padding:14px 16px;
+      margin:0 0 9px;
     }
-    .content thead{display:none}
-    .content tbody,.content tr,.content td{display:block;width:auto}
-    .content tbody tr{
-      border:1px solid var(--hairline);border-radius:12px;
-      padding:14px 16px;margin:0 0 10px;background:#fff!important;
+    .content td:nth-child(1){
+      font-size:16.5px;letter-spacing:.2px;
+      padding-bottom:6px;line-height:1.5;
     }
-    .content tbody tr:hover{background:#fff}
-    .content tbody td{
-      border:none;padding:0;width:auto!important;
+    .content td:nth-child(2){
+      font-size:15px;line-height:1.75;
+      padding-top:0;padding-bottom:2px;
     }
-    .content tbody td:nth-child(1){
-      font-size:16.5px;font-weight:700;color:var(--teal-700);
-      letter-spacing:.3px;padding-bottom:6px;line-height:1.5;
-    }
-    .content tbody td:nth-child(2){
-      font-size:14.5px;color:var(--ink-soft);line-height:1.75;
-      padding-bottom:2px;
-    }
-    .content tbody td:nth-child(3){
-      margin-top:10px;padding-top:10px;border-top:1px dashed var(--hairline);
+    .content td:nth-child(3){
+      justify-self:start;text-align:left;white-space:normal;
+      margin-top:10px;padding-top:10px;
+      border-top:1px dashed var(--hairline);
       display:flex;align-items:center;gap:8px;flex-wrap:wrap;
     }
-    .content tbody td:nth-child(3)::before{
+    .content td:nth-child(3)::before{
       content:"截止";font-size:11px;font-weight:700;letter-spacing:1.5px;
       color:var(--muted);
     }
-    /* 表格外的通用阈值 */
-    .page-homework .content td:first-child{white-space:normal}
     .img-grid{grid-template-columns:1fr 1fr}
     .img-grid img{height:84px}
   }
@@ -561,15 +579,28 @@
     .card{box-shadow:none;border:none;padding:0;margin:0;border-radius:0;max-width:100%}
     .wrap{max-width:100%;padding:0}
     .content{font-size:11pt}
-    table{display:table!important;border-color:#999;table-layout:auto}
-    thead{display:table-header-group!important}
-    tbody{display:table-row-group!important}
-    tr{display:table-row!important;border:none!important;padding:0!important;margin:0!important}
-    td,th{display:table-cell!important}
+    /* 打印时把作业卡还原成表格，省纸且对齐 */
+    .content table{
+      display:table!important;border:1px solid #999!important;
+      table-layout:auto!important;width:100%!important;
+    }
+    .content thead{display:table-header-group!important}
+    .content tbody{display:table-row-group!important}
+    .content tr{
+      display:table-row!important;border:none!important;
+      padding:0!important;margin:0!important;box-shadow:none!important;
+      background:none!important;
+    }
+    .content th,.content td{
+      display:table-cell!important;border:1px solid #ddd!important;
+      padding:5px 8px!important;width:auto!important;
+      font-size:10pt!important;white-space:normal!important;
+    }
+    .content td:nth-child(3)::before{content:none!important}
     .page-notices .content h1,.page-homework .content h1{
       -webkit-print-color-adjust:exact;print-color-adjust:exact;
     }
-    thead th{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .content thead th{-webkit-print-color-adjust:exact;print-color-adjust:exact}
     .dl-btn{display:none}
     a{color:#1A5E7A;border-bottom:1px solid #999}
     .img-fold{border:none}
@@ -620,11 +651,12 @@
   </div>
 
   <svg class="ecg" viewBox="0 0 900 78" preserveAspectRatio="none" aria-hidden="true">
-    <polyline class="ecg-line dim" points="0,30 170,30 190,25 210,30 240,30 248,33 256,16 264,40 272,30 300,24 320,30 490,30 510,25 530,30 560,30 568,33 576,16 584,40 592,30 620,24 640,30 900,30"/>
-    <path class="ecg-glow" d="M0,52 L170,52 190,45 210,52 240,52 248,58 256,14 264,68 272,52 300,42 320,52 490,52 510,45 530,52 560,52 568,58 576,14 584,68 592,52 620,42 640,52 900,52"/>
-    <path class="ecg-line" id="ecgMain" d="M0,52 L170,52 190,45 210,52 240,52 248,58 256,14 264,68 272,52 300,42 320,52 490,52 510,45 530,52 560,52 568,58 576,14 584,68 592,52 620,42 640,52 900,52"/>
-    <circle class="ecg-dot-halo" r="7"><animateMotion dur="7s" repeatCount="indefinite"><mpath xlink:href="#ecgMain"/></animateMotion></circle>
-    <circle class="ecg-dot" r="3"><animateMotion dur="7s" repeatCount="indefinite"><mpath xlink:href="#ecgMain"/></animateMotion></circle>
+    <!-- 远端导联：低幅度、静态，制造纵深 -->
+    <path class="ecg-line dim" d="M0,30 L36,29.9 L40.5,29.6 L45,29 L54,27.3 L60,27.1 L66,27.6 L78,29.3 L85.5,29.8 L93,29.9 L97.5,30.4 L99,30 L100.5,27.7 L102,23.1 L103.5,17.4 L105,13.1 L106.5,12.6 L108,17.2 L109.5,24.7 L111,31.1 L112.5,33.9 L114,33.7 L117,30.7 L118.5,29.9 L120,29.6 L135,28.5 L159,25.6 L168,25 L174,25 L177,25.3 L181.5,26.1 L192,28.5 L199.5,29.5 L204,29.8 L211.5,30 L351,30 L355.5,29.9 L361.5,29.5 L366,28.8 L372,27.6 L375,27.2 L379.5,27.1 L384,27.4 L399,29.4 L405,29.8 L412.5,29.9 L418.5,30.3 L420,28.7 L421.5,24.8 L424.5,14.2 L426,12.2 L427.5,15.2 L430.5,29.3 L432,33.4 L433.5,34 L435,32.7 L436.5,31.1 L438,30.1 L439.5,29.7 L453,28.7 L475.5,26 L487.5,25 L495,25.1 L499.5,25.7 L510,28.1 L514.5,28.9 L517.5,29.3 L526.5,29.9 L672,30 L678,29.8 L681,29.5 L685.5,28.9 L691.5,27.7 L696,27.1 L700.5,27.1 L705,27.5 L717,29.2 L721.5,29.6 L735,30 L738,30.4 L739.5,29.5 L741,26.4 L744,15.7 L745.5,12.4 L747,13.6 L748.5,19.6 L750,27.2 L751.5,32.5 L753,34.1 L754.5,33.2 L756,31.6 L757.5,30.4 L759,29.8 L762,29.4 L768,29.1 L777,28.3 L798,25.7 L808.5,25 L813,25 L816,25.2 L819,25.6 L829.5,28 L834,28.8 L838.5,29.4 L844.5,29.8 L852,30 L900,30"/>
+    <!-- 辉光底衬 -->
+    <path class="ecg-glow" d="M0,52 L28.5,52 L33,51.9 L37.5,51.5 L42,50.6 L43.5,50.1 L46.5,48.9 L51,46.8 L54,45.7 L57,45 L58.5,45 L63,45.6 L66,46.4 L73.5,49 L79.5,50.6 L85.5,51.5 L94.5,52 L97.5,53 L99,52 L100.5,46.4 L102,35.5 L103.5,21.9 L105,11.7 L106.5,10.5 L108,21.6 L109.5,39.5 L111,54.7 L112.5,61.3 L114,60.7 L117,53.8 L118.5,51.9 L120,51.1 L121.5,50.7 L129,49.6 L136.5,48 L142.5,46.4 L153,43.2 L159,41.6 L163.5,40.7 L166.5,40.3 L171,40 L174,40.1 L175.5,40.4 L178.5,41.4 L181.5,42.8 L189,46.9 L192,48.3 L196.5,50 L201,51 L205.5,51.6 L208.5,51.8 L216,52 L352.5,51.9 L355.5,51.7 L360,51.1 L363,50.3 L367.5,48.5 L373.5,45.8 L376.5,45.1 L378,45 L381,45.2 L384,45.8 L394.5,49.3 L400.5,50.8 L406.5,51.6 L414,51.9 L415.5,52.2 L417,52.8 L418.5,52.7 L420,48.9 L421.5,39.6 L424.5,14.3 L426,9.6 L427.5,16.7 L430.5,50.4 L432,60.1 L433.5,61.5 L435,58.4 L436.5,54.7 L438,52.3 L439.5,51.3 L441,50.8 L448.5,49.7 L454.5,48.5 L463.5,46.1 L474,42.9 L480,41.4 L483,40.8 L487.5,40.2 L490.5,40 L495,40.3 L498,41.2 L502.5,43.3 L510,47.4 L516,49.8 L522,51.2 L531,51.9 L535.5,52 L672,51.9 L676.5,51.6 L679.5,51.2 L684,49.9 L687,48.7 L691.5,46.6 L694.5,45.5 L697.5,45 L699,45 L702,45.4 L705,46.1 L715.5,49.6 L718.5,50.4 L724.5,51.4 L733.5,51.9 L735,52.1 L738,53 L739.5,50.8 L741,43.3 L744,17.8 L745.5,10.1 L747,13 L748.5,27.3 L750,45.3 L751.5,58 L753,61.7 L754.5,59.6 L756,55.8 L757.5,53 L759,51.5 L760.5,50.9 L768,49.8 L777,47.9 L792,43.5 L799.5,41.5 L804,40.6 L810,40 L813,40 L814.5,40.2 L817.5,41 L820.5,42.3 L831,47.9 L835.5,49.7 L841.5,51.1 L844.5,51.5 L850.5,51.9 L856.5,52 L900,52"/>
+    <!-- 主导联：窦性心律 P-QRS-T（偏斜高斯拟合，T 波上升缓、下降快） -->
+    <path class="ecg-line" id="ecgMain" d="M0,52 L28.5,52 L33,51.9 L37.5,51.5 L42,50.6 L43.5,50.1 L46.5,48.9 L51,46.8 L54,45.7 L57,45 L58.5,45 L63,45.6 L66,46.4 L73.5,49 L79.5,50.6 L85.5,51.5 L94.5,52 L97.5,53 L99,52 L100.5,46.4 L102,35.5 L103.5,21.9 L105,11.7 L106.5,10.5 L108,21.6 L109.5,39.5 L111,54.7 L112.5,61.3 L114,60.7 L117,53.8 L118.5,51.9 L120,51.1 L121.5,50.7 L129,49.6 L136.5,48 L142.5,46.4 L153,43.2 L159,41.6 L163.5,40.7 L166.5,40.3 L171,40 L174,40.1 L175.5,40.4 L178.5,41.4 L181.5,42.8 L189,46.9 L192,48.3 L196.5,50 L201,51 L205.5,51.6 L208.5,51.8 L216,52 L352.5,51.9 L355.5,51.7 L360,51.1 L363,50.3 L367.5,48.5 L373.5,45.8 L376.5,45.1 L378,45 L381,45.2 L384,45.8 L394.5,49.3 L400.5,50.8 L406.5,51.6 L414,51.9 L415.5,52.2 L417,52.8 L418.5,52.7 L420,48.9 L421.5,39.6 L424.5,14.3 L426,9.6 L427.5,16.7 L430.5,50.4 L432,60.1 L433.5,61.5 L435,58.4 L436.5,54.7 L438,52.3 L439.5,51.3 L441,50.8 L448.5,49.7 L454.5,48.5 L463.5,46.1 L474,42.9 L480,41.4 L483,40.8 L487.5,40.2 L490.5,40 L495,40.3 L498,41.2 L502.5,43.3 L510,47.4 L516,49.8 L522,51.2 L531,51.9 L535.5,52 L672,51.9 L676.5,51.6 L679.5,51.2 L684,49.9 L687,48.7 L691.5,46.6 L694.5,45.5 L697.5,45 L699,45 L702,45.4 L705,46.1 L715.5,49.6 L718.5,50.4 L724.5,51.4 L733.5,51.9 L735,52.1 L738,53 L739.5,50.8 L741,43.3 L744,17.8 L745.5,10.1 L747,13 L748.5,27.3 L750,45.3 L751.5,58 L753,61.7 L754.5,59.6 L756,55.8 L757.5,53 L759,51.5 L760.5,50.9 L768,49.8 L777,47.9 L792,43.5 L799.5,41.5 L804,40.6 L810,40 L813,40 L814.5,40.2 L817.5,41 L820.5,42.3 L831,47.9 L835.5,49.7 L841.5,51.1 L844.5,51.5 L850.5,51.9 L856.5,52 L900,52"/>
   </svg>
 </header>
 {% endif %}
@@ -648,6 +680,14 @@
   var m = body.className.match(/page-([a-z]+)/);
   var page = m ? m[1] : 'home';
   var NOW = new Date();
+
+  /* ---------- 0. 心电线：用真实路径长度驱动描线，节奏才连续 ---------- */
+  (function () {
+    var line = document.getElementById('ecgMain');
+    if (!line || !line.getTotalLength) return;
+    var len = Math.ceil(line.getTotalLength());
+    if (line.ownerSVGElement) line.ownerSVGElement.style.setProperty('--len', String(len));
+  })();
 
   /* ---------- 1. 去掉标题里的 emoji（统一视觉，改用排版符号） ---------- */
   var RE_EMOJI = /^[\s\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{2190}-\u{21FF}\u{FE0F}\u{200D}\u{20E3}]+/u;
@@ -756,6 +796,20 @@
     };
   }
 
+  // “第七周”“第7周”“第十二周”都能抽出数字
+  function cnNum(s) {
+    var m = s.match(/第\s*([0-9]+|[一二三四五六七八九十]+)\s*周/);
+    if (!m) return 0;
+    var t = m[1];
+    if (/^\d+$/.test(t)) return +t;
+    var map = { '一': 1, '二': 2, '三': 3, '四': 4, '五': 5, '六': 6, '七': 7, '八': 8, '九': 9, '十': 10 };
+    if (t === '十') return 10;
+    if (t.length === 2 && t[0] === '十') return 10 + (map[t[1]] || 0);
+    if (t.length === 2 && t[1] === '十') return (map[t[0]] || 0) * 10;
+    if (t.length === 3) return (map[t[0]] || 0) * 10 + (map[t[2]] || 0);
+    return map[t] || 0;
+  }
+
   if (page === 'home' && window.fetch && window.DOMParser) {
     fetch('{{ '/homework.html' | relative_url }}', { cache: 'no-store' })
       .then(function (r) { return r.ok ? r.text() : Promise.reject(); })
@@ -772,22 +826,41 @@
           }
         }
 
-        // 最近截止
+        // 收集所有作业的截止信息
         var rows = doc.querySelectorAll('.content table tbody tr');
-        var best = null, total = 0, firstCourse = '';
+        var items = [];
+        var total = 0, firstCourse = '';
         Array.prototype.forEach.call(rows, function (tr) {
           var tds = tr.querySelectorAll('td');
           if (tds.length < 3) return;
           total++;
-          if (!firstCourse) firstCourse = tds[0].textContent.trim();
+          var course = tds[0].textContent.trim();
+          if (!firstCourse) firstCourse = course;
           var dl = tds[2].querySelector('.deadline');
           if (!dl) return;
-          var due = parseDue(dl.textContent);
-          if (!due || due.getTime() <= NOW.getTime()) return;
-          if (!best || due.getTime() < best.due.getTime()) {
-            best = { course: tds[0].textContent.trim(), due: due, raw: dl.textContent.trim() };
-          }
+          var raw = dl.textContent.replace(/\s+/g, ' ').trim();
+          items.push({ course: course, raw: raw, due: parseDue(raw) });
         });
+
+        // 当前周次（用来判断“第七周课前”是不是还没到）
+        var curWeek = cnNum(weekLabel);
+
+        // ① 精确日期且还没到 → 按时间取最近
+        var best = null;
+        items.forEach(function (it) {
+          if (!it.due || it.due.getTime() <= NOW.getTime()) return;
+          if (!best || it.due.getTime() < best.due.getTime()) best = it;
+        });
+
+        // ② 没有精确日期时，找“第 N 周”且 N > 当前周 → 显示原文
+        var rel = null;
+        if (!best) {
+          items.forEach(function (it) {
+            if (rel) return;
+            var n = cnNum(it.raw);
+            if (n && n > curWeek) rel = it;
+          });
+        }
 
         var box = document.getElementById('heroStatus');
         var hero = document.querySelector('.hero');
@@ -801,6 +874,16 @@
             '截止 ' + (best.due.getMonth() + 1) + ' 月 ' + best.due.getDate() + ' 日 ' +
             ('0' + best.due.getHours()).slice(-2) + ':' + ('0' + best.due.getMinutes()).slice(-2);
           box.className = 'hero-status ' + left.cls;
+        } else if (rel) {
+          // 只有“第七周课前”这类相对时间：显示原文，不硬编倒计时
+          var short = rel.raw.split(/[、，,；;]/)[0];
+          var wkNum = cnNum(rel.raw);
+          box.querySelector('.hs-label').textContent = '下次截止';
+          document.getElementById('hsCourse').textContent = rel.course;
+          document.getElementById('hsTime').textContent = short;
+          document.getElementById('hsNote').textContent =
+            wkNum ? '第 ' + wkNum + ' 周开始前 · 具体以老师通知为准' : '具体以老师通知为准';
+          box.className = 'hero-status is-relative';
         } else if (total) {
           // 截止全部已过，或写的是“第 N 周课前”这类相对时间 → 退化成周作业概览
           box.querySelector('.hs-label').textContent = '本周作业';
