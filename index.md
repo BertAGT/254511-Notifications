@@ -17,6 +17,8 @@ show_banner: true
 
 ## 🏠 最新动态
 
+- **10.24** 第7周作业已更新 → [查看](homework.html)
+
 - **10.18** 第6周作业已更新 → [查看](homework.html)
 - **10.18** 2026沈元奖章评选通知已更新 → [查看](notices.html)
 
