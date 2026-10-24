@@ -773,10 +773,12 @@
       Array.prototype.forEach.call(ul.children, function (li) {
         var st = li.querySelector('strong');
         if (!st) return;
-        var label = st.textContent.trim().toLowerCase();
-        if (label === 'ddl' || label === '截止' || label === '截止时间') {
+        var label = st.textContent.trim().toLowerCase().replace(/[：:\s]/g, '');
+        if (/^(ddl|deadline|due|截止|截止时间|截止日期)$/.test(label)) {
           ddlLi = li;
-          ddlText = li.textContent.replace(/^\s*(ddl|截止时间?)\s*[：:]\s*/i, '').trim();
+          ddlText = li.textContent
+            .replace(/^\s*(ddl|deadline|due|截止时间|截止日期|截止)\s*[：:]\s*/i, '')
+            .trim();
         }
       });
 
@@ -786,10 +788,14 @@
       var esc = ddlText.replace(/[&<>]/g, function (c) {
         return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c];
       });
-      var hl = esc.replace(
-        /(\d{1,2}\s*日[^\s]{0,8}?\d{1,2}\s*[:：]\s*\d{2})/,
-        '<span class="ddl-hl">$1</span>'
-      );
+      var hl = esc;
+      [/(\d{1,2}\s*日[^\s]{0,8}?\d{1,2}\s*[:：]\s*\d{2})/,
+       /(\d{1,2}\s*[.\-/月]\s*\d{1,2}\s*日?(?:\s*\d{1,2}\s*[:：]\s*\d{2})?)/,
+       /(\d{1,2}\s*[:：]\s*\d{2})/
+      ].forEach(function (re) {
+        if (hl.indexOf('ddl-hl') > -1) return;
+        hl = hl.replace(re, '<span class="ddl-hl">$1</span>');
+      });
 
       var box = document.createElement('div');
       box.className = 'notice-ddl';
