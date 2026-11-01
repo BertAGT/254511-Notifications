@@ -17,6 +17,8 @@ show_banner: true
 
 ## 🏠 最新动态
 
+- **11.1** 第8周作业已更新 → [查看](homework.html)
+
 - **10.24** 第7周作业已更新 → [查看](homework.html)
 - **10.25** 2026年校物理竞赛通知已更新 → [查看](notices.html)
 
