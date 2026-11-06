@@ -3,6 +3,15 @@ layout: default
 title: 学习通知
 nav: notices
 ---
+
+# 📢 中国电信杯“AI赋能挑战”比赛 NEW
+- **内容**：现启动中国电信杯“AI 赋能挑战”人工智能专项竞赛暨第二届北京市大学生“人工智能+”创新大赛校级预选赛报名。我校在校本科生可报名参赛，优秀项目将推荐参加北京市决赛。相关规程及报名材料详见通知，鼓励各位同学积极参加。
+- **附件**：[附件1：北京市教育委员会关于举办第二届 北京市大学生“人工智能+”创新大赛的通知.pdf](https://github.com/user-attachments/files/34470584/1.%2B.pdf)[关于举办第二届北京市大学生创新大赛校级预选赛的通知.docx](https://github.com/user-attachments/files/34470587/default.docx)
+
+---
+
+---
+
 # 📢 第四届全国大学生职业规划大赛北航校赛 NEW
 - **内容**：该比赛为冯如杯专项赛。请感兴趣的同学查收比赛通知，并私信导员
 - **附件**：[关于开展第四届全国大学生职业规划大赛北航校赛的通知.pdf](https://github.com/user-attachments/files/34458853/default.pdf)
