@@ -17,6 +17,8 @@ show_banner: true
 
 ## 🏠 最新动态
 
+- **11.6** 第9周作业已更新 → [查看](homework.html)
+
 - **11.1** 第8周作业已更新 → [查看](homework.html)
 
 ## ❓ 使用说明
