@@ -93,37 +93,92 @@
   /* 数字统一等宽，避免倒计时/日期跳动 */
   .tnum,.deadline,.feed-meta,time{font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
 
-  /* ===== 顶部导航：单行固定高度，手机端不换行 ===== */
-  .navbar{
-    position:sticky;top:0;z-index:50;
-    background:rgba(255,255,255,.92);
-    backdrop-filter:saturate(160%) blur(12px);
-    -webkit-backdrop-filter:saturate(160%) blur(12px);
+  /* 正文限宽：宽屏下行长好读 */
+  .content p,.content li{max-width:780px}
+  .content li p{max-width:none}
+
+  /* ===== 骨架：左侧固定导航 + 主内容区 ===== */
+  .shell{display:flex;align-items:flex-start;min-height:100vh}
+  .sidebar{
+    position:sticky;top:0;flex:none;
+    width:228px;height:100vh;
+    padding:22px 16px 20px;
+    display:flex;flex-direction:column;gap:4px;
+    border-right:1px solid var(--hairline);
+    background:
+      linear-gradient(rgba(26,94,122,.020) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(26,94,122,.020) 1px, transparent 1px),
+      radial-gradient(ellipse 130% 42% at 50% -10%, rgba(168,230,207,.34), transparent 62%),
+      linear-gradient(180deg,#FAFDFB 0%,#FFFFFF 60%);
+    background-size:32px 32px,32px 32px,100% 100%,100% 100%;
+    backdrop-filter:saturate(150%) blur(10px);
+    -webkit-backdrop-filter:saturate(150%) blur(10px);
+    z-index:40;
+  }
+  .sidebar .brand{
+    display:flex;align-items:center;gap:10px;
+    padding:4px 6px 16px;margin-bottom:8px;
     border-bottom:1px solid var(--hairline);
+    text-decoration:none;border-radius:0;
   }
-  .nav-inner{
-    max-width:880px;margin:0 auto;padding:0 20px;
-    height:60px;display:flex;align-items:center;gap:14px;
+  .sidebar .brand:hover{background:none}
+  .brand-mark{flex:none;display:block;width:30px;height:30px;border-radius:8px}
+  .brand-text{
+    display:flex;flex-direction:column;line-height:1.3;min-width:0;white-space:nowrap;
+    font-size:14.5px;font-weight:700;color:var(--teal-900);letter-spacing:.7px;
   }
-  .brand{
-    display:flex;align-items:center;gap:9px;min-width:0;
-    font-weight:700;font-size:15px;color:var(--teal-900);
-    text-decoration:none;border-bottom:none;letter-spacing:.6px;white-space:nowrap;
+  .brand-text em{
+    font-style:normal;font-size:10.5px;font-weight:500;
+    color:var(--muted);letter-spacing:.9px;margin-top:2px;
   }
-  .brand:hover{background:none;border-bottom:none}
-  .brand-mark{flex:none;display:block;width:28px;height:28px;border-radius:7px}
-  .brand-short{display:none}
-  .nav-links{margin-left:auto;display:flex;gap:2px;flex:none}
-  .nav-links a{
-    display:inline-flex;align-items:center;justify-content:center;
-    text-decoration:none;color:var(--muted);font-size:13.5px;font-weight:600;
-    padding:8px 14px;border-radius:999px;white-space:nowrap;
-    border-bottom:none;letter-spacing:.5px;
-    transition:color .15s,background .15s;
+  .side-nav{display:flex;flex-direction:column;gap:6px}
+  .side-nav a{
+    display:flex;align-items:center;
+    padding:11px 13px;border-radius:10px;
+    background:rgba(255,255,255,.72);
+    border:1px solid rgba(26,94,122,.075);
+    font-size:13.8px;font-weight:600;color:var(--muted);
+    text-decoration:none;letter-spacing:.6px;white-space:nowrap;
+    transition:background .15s,color .15s,border-color .15s;
   }
-  .nav-links a:hover{color:var(--teal-700);background:rgba(168,230,207,.30)}
-  .nav-links a.active,.nav-links a[aria-current="page"]{color:#fff;background:var(--teal-700)}
-  .nav-links a.active:hover,.nav-links a[aria-current="page"]:hover{color:#fff;background:var(--teal-900)}
+  .side-nav a:hover{background:#fff;border-color:var(--hairline-strong);color:var(--teal-700);box-shadow:0 1px 4px -2px rgba(13,59,71,.18)}
+  .side-nav a.active,.side-nav a[aria-current="page"]{background:var(--teal-700);border-color:var(--teal-700);color:#fff}
+  .side-nav a.active:hover,.side-nav a[aria-current="page"]:hover{background:var(--teal-900);color:#fff}
+  .side-pulse{display:block;width:100%;height:18px;margin-top:auto;margin-bottom:2px}
+  .side-meta{
+    padding-top:12px;border-top:1px solid var(--hairline);
+    display:flex;flex-direction:column;gap:2px;
+    font-size:10.5px;color:var(--muted);letter-spacing:.5px;line-height:1.7;
+    opacity:.85;
+  }
+  .main{flex:1;min-width:0}
+  /* 桌面：内容贴侧栏左对齐，扫读路径更短 */
+  @media (min-width:1101px){
+    .main{padding-left:56px;padding-right:56px}
+    .main .wrap{max-width:960px;margin:0;padding:0}
+  }
+
+  /* 窄屏：侧栏折回顶部横条，保持原有观感 */
+  @media (max-width:1100px){
+    .shell{display:block}
+    .sidebar{
+      position:sticky;top:0;width:auto;height:56px;
+      flex-direction:row;align-items:center;gap:10px;
+      padding:0 14px;
+      border-right:none;border-bottom:1px solid var(--hairline);
+      background:rgba(255,255,255,.94);
+      z-index:50;
+    }
+    .sidebar .brand{padding:0;margin:0;border-bottom:none;gap:8px}
+    .brand-mark{width:26px;height:26px}
+    .brand-text{font-size:13.5px}
+    .brand-text em{display:none}
+    .side-nav{flex-direction:row;margin-left:auto;gap:2px}
+    .side-nav a{padding:8px 11px;font-size:13px;border-radius:999px;background:none;border-color:transparent}
+    .side-nav a.active,.side-nav a[aria-current="page"]{background:var(--teal-700);border-color:var(--teal-700)}
+    .side-pulse{display:none}
+  .side-meta{display:none}
+  }
 
   /* 键盘可达性：清晰的焦点环 */
   a:focus-visible,summary:focus-visible,button:focus-visible{
@@ -246,7 +301,7 @@
     background:var(--mint-strong);
   }
   .content li strong{
-    display:inline-block;margin-right:3px;padding:1px 10px;border-radius:999px;
+    display:inline-block;margin-right:1px;padding:1px 10px;border-radius:999px;
     background:#E2F3EA;color:#14594F;font-size:13px;font-weight:600;
   }
   /* 正文里手写的 “1.” 序号：去掉圆点，避免 “• 1.” 双重符号 */
@@ -542,7 +597,7 @@
 
   /* ===== 打印 ===== */
   @media print{
-    .navbar,.hero,footer,.ecg{display:none!important}
+    .sidebar,.hero,footer,.ecg{display:none!important}
     html::before,body::before,body::after{display:none!important}
     body{background:#fff!important}
     .card{box-shadow:none;border:none;padding:0;margin:0;border-radius:0;max-width:100%}
@@ -581,20 +636,28 @@
 <body class="page-{{ page.nav | default: 'home' }}">
 {% assign current = page.nav | default: 'home' %}
 
-<nav class="navbar" aria-label="站点导航">
-  <div class="nav-inner">
-    <a class="brand" href="{{ '/' | relative_url }}" aria-label="254511班学习主页">
-      <img class="brand-mark" src="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Cdefs%3E%3ClinearGradient id=%22nuc%22 x1=%22.15%22 y1=%22.05%22 x2=%22.85%22 y2=%221%22%3E%3Cstop offset=%220%22 stop-color=%22%235FC0A4%22/%3E%3Cstop offset=%22.5%22 stop-color=%22%232F8672%22/%3E%3Cstop offset=%221%22 stop-color=%22%231B6B6A%22/%3E%3C/linearGradient%3E%3CradialGradient id=%22hl%22 cx=%22.3%22 cy=%22.18%22 r=%22.75%22%3E%3Cstop offset=%220%22 stop-color=%22%23fff%22 stop-opacity=%22.42%22/%3E%3Cstop offset=%221%22 stop-color=%22%23fff%22 stop-opacity=%220%22/%3E%3C/radialGradient%3E%3Cfilter id=%22rough%22 x=%22-30%25%22 y=%22-30%25%22 width=%22160%25%22 height=%22160%25%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%22.045%22 numOctaves=%223%22 seed=%229%22 result=%22n%22/%3E%3CfeDisplacementMap in=%22SourceGraphic%22 in2=%22n%22 scale=%225%22 xChannelSelector=%22R%22 yChannelSelector=%22G%22/%3E%3C/filter%3E%3C/defs%3E%3Crect width=%2264%22 height=%2264%22 rx=%2215%22 fill=%22%23FAF7EF%22/%3E%3Ccircle cx=%2213%22 cy=%2212%22 r=%2216%22 fill=%22%23A6E0CB%22 opacity=%22.26%22/%3E%3Ccircle cx=%2253%22 cy=%2250%22 r=%2214%22 fill=%22%23C9B0EC%22 opacity=%22.22%22/%3E%3Cg filter=%22url(%23rough)%22%3E%3Ccircle cx=%2231%22 cy=%2227%22 r=%2215.5%22 fill=%22url(%23nuc)%22/%3E%3Ccircle cx=%2231%22 cy=%2227%22 r=%2215.5%22 fill=%22url(%23hl)%22/%3E%3C/g%3E%3Ccircle cx=%2226%22 cy=%2222.5%22 r=%224.2%22 fill=%22%23EAFBF5%22 opacity=%22.8%22/%3E%3Ccircle cx=%2236%22 cy=%2232%22 r=%222.2%22 fill=%22%230C3230%22 opacity=%22.22%22/%3E%3Cellipse cx=%2247.5%22 cy=%2240%22 rx=%226.2%22 ry=%223.4%22 fill=%22%23B06A44%22 opacity=%22.5%22 transform=%22rotate(-24 47.5 40)%22/%3E%3Cellipse cx=%2214.5%22 cy=%2242%22 rx=%225.2%22 ry=%223%22 fill=%22%237E68A6%22 opacity=%22.42%22 transform=%22rotate(22 14.5 42)%22/%3E%3Ccircle cx=%2245%22 cy=%2213.5%22 r=%222.1%22 fill=%22%232E806C%22 opacity=%22.45%22/%3E%3Ccircle cx=%2211%22 cy=%2227%22 r=%221.5%22 fill=%22%23B06A44%22 opacity=%22.4%22/%3E%3Ccircle cx=%2252%22 cy=%2228%22 r=%221.3%22 fill=%22%237E68A6%22 opacity=%22.35%22/%3E%3Ctext x=%2232%22 y=%2257.5%22 text-anchor=%22middle%22 font-family=%22Georgia,'Times New Roman',serif%22 font-style=%22italic%22 font-size=%228.4%22 letter-spacing=%221%22 fill=%22%233D5A52%22 opacity=%22.85%22%3E254511%3C/text%3E%3C/svg%3E" width="28" height="28" alt="">
-      <span class="brand-full">{{ site.title }}</span>
-      <span class="brand-short">254511</span>
-    </a>
-    <div class="nav-links">
-      <a href="{{ '/' | relative_url }}"{% if current == "home" %} class="active" aria-current="page"{% endif %}>首页</a>
+<div class="shell">
+<aside class="sidebar">
+  <a class="brand" href="{{ '/' | relative_url }}" aria-label="254511班学习主页">
+    <img class="brand-mark" src="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Cdefs%3E%3ClinearGradient id=%22nuc%22 x1=%22.15%22 y1=%22.05%22 x2=%22.85%22 y2=%221%22%3E%3Cstop offset=%220%22 stop-color=%22%235FC0A4%22/%3E%3Cstop offset=%22.5%22 stop-color=%22%232F8672%22/%3E%3Cstop offset=%221%22 stop-color=%22%231B6B6A%22/%3E%3C/linearGradient%3E%3CradialGradient id=%22hl%22 cx=%22.3%22 cy=%22.18%22 r=%22.75%22%3E%3Cstop offset=%220%22 stop-color=%22%23fff%22 stop-opacity=%22.42%22/%3E%3Cstop offset=%221%22 stop-color=%22%23fff%22 stop-opacity=%220%22/%3E%3C/radialGradient%3E%3Cfilter id=%22rough%22 x=%22-30%25%22 y=%22-30%25%22 width=%22160%25%22 height=%22160%25%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%22.045%22 numOctaves=%223%22 seed=%229%22 result=%22n%22/%3E%3CfeDisplacementMap in=%22SourceGraphic%22 in2=%22n%22 scale=%225%22 xChannelSelector=%22R%22 yChannelSelector=%22G%22/%3E%3C/filter%3E%3C/defs%3E%3Crect width=%2264%22 height=%2264%22 rx=%2215%22 fill=%22%23FAF7EF%22/%3E%3Ccircle cx=%2213%22 cy=%2212%22 r=%2216%22 fill=%22%23A6E0CB%22 opacity=%22.26%22/%3E%3Ccircle cx=%2253%22 cy=%2250%22 r=%2214%22 fill=%22%23C9B0EC%22 opacity=%22.22%22/%3E%3Cg filter=%22url(%23rough)%22%3E%3Ccircle cx=%2231%22 cy=%2227%22 r=%2215.5%22 fill=%22url(%23nuc)%22/%3E%3Ccircle cx=%2231%22 cy=%2227%22 r=%2215.5%22 fill=%22url(%23hl)%22/%3E%3C/g%3E%3Ccircle cx=%2226%22 cy=%2222.5%22 r=%224.2%22 fill=%22%23EAFBF5%22 opacity=%22.8%22/%3E%3Ccircle cx=%2236%22 cy=%2232%22 r=%222.2%22 fill=%22%230C3230%22 opacity=%22.22%22/%3E%3Cellipse cx=%2247.5%22 cy=%2240%22 rx=%226.2%22 ry=%223.4%22 fill=%22%23B06A44%22 opacity=%22.5%22 transform=%22rotate(-24 47.5 40)%22/%3E%3Cellipse cx=%2214.5%22 cy=%2242%22 rx=%225.2%22 ry=%223%22 fill=%22%237E68A6%22 opacity=%22.42%22 transform=%22rotate(22 14.5 42)%22/%3E%3Ccircle cx=%2245%22 cy=%2213.5%22 r=%222.1%22 fill=%22%232E806C%22 opacity=%22.45%22/%3E%3Ccircle cx=%2211%22 cy=%2227%22 r=%221.5%22 fill=%22%23B06A44%22 opacity=%22.4%22/%3E%3Ccircle cx=%2252%22 cy=%2228%22 r=%221.3%22 fill=%22%237E68A6%22 opacity=%22.35%22/%3E%3Ctext x=%2232%22 y=%2257.5%22 text-anchor=%22middle%22 font-family=%22Georgia,'Times New Roman',serif%22 font-style=%22italic%22 font-size=%228.4%22 letter-spacing=%221%22 fill=%22%233D5A52%22 opacity=%22.85%22%3E254511%3C/text%3E%3C/svg%3E" width="28" height="28" alt="">
+    <span class="brand-text">254511<em>班 · 学习主页</em></span>
+  </a>
+  <nav class="side-nav" aria-label="站点导航">
+<a href="{{ '/' | relative_url }}"{% if current == "home" %} class="active" aria-current="page"{% endif %}>首页</a>
       <a href="{{ 'homework.html' | relative_url }}"{% if current == "homework" %} class="active" aria-current="page"{% endif %}>作业</a>
       <a href="{{ 'notices.html' | relative_url }}"{% if current == "notices" %} class="active" aria-current="page"{% endif %}>通知</a>
-    </div>
+  </nav>
+  <svg class="side-pulse" viewBox="0 0 120 18" preserveAspectRatio="none" aria-hidden="true">
+    <polyline points="0,9 33,9 39,3.5 45,14.5 51,2 57,13 63,9 120,9"
+              fill="none" stroke="#4CAF8D" stroke-width="1.2"
+              stroke-linecap="round" stroke-linejoin="round" opacity=".5"/>
+  </svg>
+  <div class="side-meta">
+    <span>北京航空航天大学</span>
+    <span>医学科学与工程学院</span>
   </div>
-</nav>
+</aside>
+<div class="main">
 
 {% if page.show_banner %}
 <header class="hero wrap">
@@ -634,6 +697,8 @@
   北京航空航天大学 · 医学科学与工程学院 · 254511班<br>
   <span style="font-size:12px;opacity:.75">由侯宝琪维护 · Powered by GitHub Pages</span>
 </footer>
+</div>
+</div>
 
 <script>
 (function () {
@@ -708,19 +773,20 @@
   }
 
   /* ---------- 3. 首页：最近截止 + 周次 ---------- */
-  /* ---------- 3. 周次：按日期自动推算，不在依赖作业页 ---------- */
-  // 基准：2026-10-26（周一）= 第 8 周，之后每逢周一自动 +1。
-  // 换学期时改这两行即可：BASE 改成新学期第 1 周的周一，BASE_WEEK 改成 1。
+  /* ---------- 3. 周次：按日期自动推算 ---------- */
+  // 基准：2026-10-26（周一）= 第 8 周；换学期改这两行即可。
   (function () {
-    var el = document.getElementById('heroWeek');
-    if (!el) return;
     var BASE = new Date(2026, 9, 26);
     var BASE_WEEK = 8;
     var today = new Date(NOW.getFullYear(), NOW.getMonth(), NOW.getDate());
     var days = Math.round((today.getTime() - BASE.getTime()) / 864e5);
     var week = BASE_WEEK + Math.floor(days / 7);
     if (week < 1) week = 1;
-    el.textContent = '26秋 · 第 ' + week + ' 周';
+    var text = '26秋 · 第 ' + week + ' 周';
+    ['heroWeek', 'sideTerm'].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.textContent = text;
+    });
   })();
 
   /* ---------- 4. 通知页：把 ddl 提成独立块 + 裸链接可点 ---------- */
@@ -771,6 +837,11 @@
   // 全站：裸网址 → 可读链接（作业页的网盘地址、通知页的官方链接都靠它）
   var contentRoot = document.querySelector('.content');
   if (contentRoot) linkify(contentRoot);
+
+  // 标题里的 **NEW** 加绿色徽章
+  Array.prototype.forEach.call(document.querySelectorAll('.content h1 strong'), function (st) {
+    if (st.textContent.trim().toUpperCase() === 'NEW') st.className = 'new-badge';
+  });
 
   if (page === 'notices') {
     var heads = document.querySelectorAll('.content h1');
