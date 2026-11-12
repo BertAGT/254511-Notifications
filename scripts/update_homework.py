@@ -4,7 +4,9 @@
 作业自动发布机器人的核心脚本
 =================================
 作用：读取学委填写的 Issue 表单内容，自动把新一周的作业
-      写入 homework.md 的"每周作业区"（旧周直接被替换，不留档），
+      写入 homework.md 的"每周作业区"（页面只留最新一周），
+      同时在 archive/ 留一份归档、在 data/homework.json 留结构化数据
+      （供搜索、日后做抽取/问答智能体使用），
       并在 index.md 的"最新动态"里加一条记录。
 
 工作原理（给学委的编程小课堂 🧬）：
@@ -16,6 +18,7 @@
 5. 后续步骤由 workflow 自动 git 提交发布
 """
 
+import json
 import os
 import re
 from datetime import date
@@ -66,6 +69,23 @@ def parse_section(body: str, label: str) -> str:
         if not line.strip().startswith("###")
     ]
     return clean("\n".join(lines))
+
+
+def parse_items(items: str):
+    """把"科目 | 内容 | 截止"多行文本解析成结构化列表。"""
+    out = []
+    for raw in items.splitlines():
+        line = raw.strip()
+        if not line or line.startswith("```"):
+            continue
+        parts = [p.strip() for p in line.split("|")]
+        while len(parts) < 3:
+            parts.append("")
+        subject, task, due = parts[0], parts[1], parts[2]
+        if not subject:
+            continue
+        out.append({"course": subject, "task": task, "due": clean(due)})
+    return out
 
 
 def build_week_block(week: str, items: str, notes: str) -> str:
@@ -155,6 +175,65 @@ def update_homework(block: str, homework_path: str):
         f.write(content)
 
 
+def season_of(week: str) -> str:
+    """从"26秋 第 9 周"推出归档目录名：2026-fall / 2027-spring。"""
+    m = re.search(r"(\d{2})\s*(秋|春|夏|冬)", week)
+    if not m:
+        return "unknown"
+    year = 2000 + int(m.group(1))
+    term = "fall" if m.group(2) in "秋冬" else "spring"
+    return f"{year}-{term}"
+
+
+def week_no(week: str):
+    """抽出周次数字，抽不到返回 None。"""
+    m = re.search(r"第\s*(\d+)\s*周", week)
+    return int(m.group(1)) if m else None
+
+
+def save_archive(week: str, block: str, items: str, notes: str):
+    """留档：archive/<学期>/week-NN.md 给人看，data/homework.json 给机器用。
+
+    页面（homework.md）依然只保留当周，这里纯粹是"数据层"，不参与展示。
+    同一周重复提交会覆盖该周，不会产生重复记录。
+    """
+    season = season_of(week)
+    n = week_no(week)
+    if n is None:
+        print(f"⚠️ 周次里没有数字（{week}），跳过归档")
+        return
+
+    os.makedirs(os.path.join("archive", season), exist_ok=True)
+    md_path = os.path.join("archive", season, f"week-{n:02d}.md")
+    with open(md_path, "w", encoding="utf-8") as f:
+        f.write(block)
+
+    os.makedirs("data", exist_ok=True)
+    json_path = os.path.join("data", "homework.json")
+    data = {"season": season, "weeks": []}
+    if os.path.exists(json_path):
+        try:
+            with open(json_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+        except Exception:
+            pass
+
+    kept = [w for w in data.get("weeks", []) if w.get("week") != n]
+    kept.append({
+        "week": n,
+        "label": week,
+        "published": date.today().isoformat(),
+        "notes": notes,
+        "items": parse_items(items),
+    })
+    kept.sort(key=lambda w: w["week"])
+
+    with open(json_path, "w", encoding="utf-8") as f:
+        json.dump({"season": season, "weeks": kept}, f, ensure_ascii=False, indent=2)
+
+    print(f"已归档：{md_path} + {json_path}（共 {len(kept)} 周）")
+
+
 def update_index(week: str, index_path: str):
     """在 index.md 的"最新动态"最上面加一行。文件不存在时自动跳过。"""
     if not os.path.exists(index_path):
@@ -202,5 +281,6 @@ if __name__ == "__main__":
 
     block = build_week_block(week, items, notes)
     update_homework(block, "homework.md")
+    save_archive(week, block, items, notes)
     update_index(week, "index.md")
     print("✅ homework.md 与 index.md 更新完成")
