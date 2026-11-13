@@ -8,8 +8,8 @@ show_banner: true
 
 点按钮直接下载 ↓
 
-<a href="files/d984f84287.xlsx" class="dl-btn">📋 请假条（Excel）</a>
-<a href="files/f3549ec185.doc" class="dl-btn">🏫 离校备案表（Word）</a>
+<a href="files/leave-application.xlsx" class="dl-btn" download>📋 请假条（Excel）</a>
+<a href="files/leave-school-form.doc" class="dl-btn" download>🏫 离校备案表（Word）</a>
 
 <div class="dl-tip">
 💡 请使用浏览器打开网站后下载。
