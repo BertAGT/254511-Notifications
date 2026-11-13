@@ -32,4 +32,16 @@ jobs:
         env:
           EDGEONE_API_TOKEN: ${{ secrets.EDGEONE_API_TOKEN }}
         run: |
-          npx -y edgeone pages deploy ./_site -n 254511 -t "$EDGEONE_API_TOKEN"
+          set +e
+          npx -y edgeone pages deploy ./_site -n 254511 -t "$EDGEONE_API_TOKEN" > /tmp/deploy.log 2>&1
+          CODE=$?
+          echo "exit=$CODE"
+          tail -50 /tmp/deploy.log
+          {
+            echo "### 部署输出（末 50 行）"
+            echo ""
+            echo '```'
+            tail -50 /tmp/deploy.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit $CODE
