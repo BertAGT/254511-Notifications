@@ -27,11 +27,15 @@ jobs:
           ISSUE_TITLE: ${{ github.event.issue.title }}
           ISSUE_BODY: ${{ github.event.issue.body }}
 
+      - name: 本地化外部附件
+        continue-on-error: true
+        run: python scripts/localize_assets.py
+
       - name: 提交并发布
         run: |
           git config user.name "homework-bot"
           git config user.email "actions@github.com"
-          git add homework.md index.md archive data
+          git add homework.md index.md archive data assets files
           git commit -m "📦 自动发布：${{ github.event.issue.title }}" || echo "没有改动"
           git push
 
