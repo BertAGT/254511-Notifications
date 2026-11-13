@@ -38,7 +38,25 @@ jobs:
       - name: 生成静态站
         run: |
           pip install --quiet markdown
-          python scripts/build_preview.py --site
+          set +e
+          python scripts/build_preview.py --site 2>&1 | tee /tmp/build.log
+          BUILD_CODE=$?
+          set -e
+          {
+            echo "### 构建输出"
+            echo '```'
+            cat /tmp/build.log
+            echo '```'
+            echo "### 工作目录 $(pwd)"
+            echo '```'
+            ls -la
+            echo '```'
+            echo "### _site 内容"
+            echo '```'
+            ls -laR _site 2>&1 | head -40 || echo "NOT FOUND"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit $BUILD_CODE
 
       - name: 检查产物
         run: |
