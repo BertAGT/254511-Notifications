@@ -28,6 +28,6 @@ nav: homework
 https://bhpan-443.e1.buaa.edu.cn/link/AAB21AC286D37F4241B31F7058CE9AE2F3
 提取码：4au5
 
-<img width="1176" height="658" alt="0" src="https://github.com/user-attachments/assets/9ca4044c-abd1-4d2d-8a38-9a9a153d6f1d" />
-<img width="1171" height="657" alt="1" src="https://github.com/user-attachments/assets/ba084412-2a86-4935-986d-adcaea0152e1" />
-<img width="1162" height="655" alt="2" src="https://github.com/user-attachments/assets/e79e6065-4c57-4824-b34e-92d85d424136" />
+<img width="1176" height="658" alt="0" src="assets/img/0bc217875a.png" />
+<img width="1171" height="657" alt="1" src="assets/img/493cb600a9.png" />
+<img width="1162" height="655" alt="2" src="assets/img/4794a42045.png" />
