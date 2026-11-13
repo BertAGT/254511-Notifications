@@ -1,0 +1,36 @@
+name: 部署到 EdgeOne
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "homework.md"
+      - "index.md"
+      - "notices.md"
+      - "archive/**"
+      - "data/**"
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 拉取仓库
+        uses: actions/checkout@v4
+
+      - name: 安装 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 生成静态站
+        run: |
+          pip install --quiet markdown
+          python scripts/build_preview.py --site
+
+      - name: 部署到 EdgeOne
+        uses: TencentEdgeOne/edgeone-pages-action@v1
+        with:
+          token: ${{ secrets.EDGEONE_API_TOKEN }}
+          project-name: "254511"
+          build-path: "./_site"
