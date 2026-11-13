@@ -902,6 +902,7 @@
 
     function norm(t) {
       var v = (t || '').replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{FE0F}\u{200D}]/gu, '');
+      v = v.replace(/[\u2192\u203a\u00bb]\s*查看\s*$/u, '');
       return v.replace(/\s+/g, ' ').trim();
     }
 
@@ -943,7 +944,7 @@
               var parts = Array.prototype.map.call(cells, function (c) { return norm(c.textContent); });
               var row = parts.join(' · ');
               if (row) out.push({
-                page: pages[i].label, url: pages[i].url,
+                page: pages[i].label, url: pages[i].url, type: 'row',
                 section: section, title: parts[0] || section, text: row
               });
               return;
@@ -952,8 +953,8 @@
             if (!txt) return;
             if (/^H[123]$/.test(el.tagName)) { section = txt; return; }
             out.push({
-              page: pages[i].label, url: pages[i].url,
-              section: section, title: txt.slice(0, 30), text: txt
+              page: pages[i].label, url: pages[i].url, type: 'text',
+              section: section, title: txt, text: txt
             });
           });
         } catch (e) {}
@@ -992,13 +993,32 @@
       panel.innerHTML =
         '<div class="sr-count">找到 ' + list.length + ' 条</div>' +
         list.map(function (it, i) {
-          var title = it.title || it.section || it.page;
-          var meta = it.page + (it.section && it.section !== title ? ' · ' : '');
-          var sec = it.section && it.section !== title ? it.section.slice(0, 18) : '';
+          var full = it.text || '';
+          var isRow = it.type === 'row';
+          var head, rest;
+
+          if (isRow) {
+            // 作业表格行：标题是课程名，正文是整行
+            head = it.title;
+            rest = full.slice(it.title.length).replace(/^\s*·\s*/, '');
+          } else if (full.length <= 90) {
+            // 短文本：一行说完，不再重复
+            head = full;
+            rest = '';
+          } else {
+            head = full.slice(0, 60);
+            rest = full.slice(60);
+            // 尾巴太短就并回标题，避免出现 “df”“信导员” 这种碎片
+            if (rest.length < 15) { head = full; rest = ''; }
+          }
+
+          var meta = it.page + (it.section && it.section !== head ? ' · ' : '');
+          var sec = it.section && it.section !== head ? it.section.slice(0, 16) : '';
           return '<a class="sr-item" data-i="' + i + '" data-page="' + esc(it.page) + '" href="' + it.url + '">' +
             '<div class="sr-meta">' + esc(meta) + esc(sec) + '</div>' +
-            '<div class="sr-title">' + hl(title, terms) + '</div>' +
-            '<div class="sr-snip">' + hl(it.text.slice(0, 88), terms) + '</div></a>';
+            '<div class="sr-title">' + hl(head, terms) + '</div>' +
+            (rest ? '<div class="sr-snip">' + (isRow ? esc(rest) : '…' + hl(rest.slice(0, 80), terms)) + '</div>' : '') +
+            '</a>';
         }).join('');
       panel.hidden = false;
     }
