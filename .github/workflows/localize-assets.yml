@@ -1,0 +1,32 @@
+name: 本地化外部附件
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 2 * * 1"
+
+jobs:
+  localize:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: 拉取仓库
+        uses: actions/checkout@v4
+
+      - name: 安装 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 下载外部附件并改写链接
+        continue-on-error: true
+        run: python scripts/localize_assets.py
+
+      - name: 提交
+        run: |
+          git config user.name "asset-bot"
+          git config user.email "actions@github.com"
+          git add -A
+          git commit -m "🖼 自动本地化外部附件" || echo "没有改动"
+          git push
