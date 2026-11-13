@@ -14,7 +14,7 @@ nav: homework
 | 基础医学实验 | 第十周实验报告 | <span class="deadline">第十一周课前</span> |
 | 电路分析 | 第十周实验报告 | <span class="deadline">第十二周课前</span> |
 | 基物实验 | 第十周实验报告、第十一周预习报告 | <span class="deadline">第十一周课前</span> |
-| 概率统计B |  | <span class="tbd">以老师通知为准</span> |
+| 概率统计B | 习题4.1：1、2、3、4；习题4.2：1、3、4、5、6、8 | <span class="tbd">11.17 23:59</span> |
 
 ---
 
