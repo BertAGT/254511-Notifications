@@ -49,11 +49,10 @@ jobs:
       # 机器人用 GITHUB_TOKEN push 不会触发另一个 workflow（GitHub 防循环），
       # 所以部署必须写在这里，不能指望 deploy-edgeone.yml 接力。
       - name: 部署到 EdgeOne
-        uses: TencentEdgeOne/edgeone-pages-action@v1
-        with:
-          token: ${{ secrets.EDGEONE_API_TOKEN }}
-          project-name: "254511"
-          build-path: "./_site"
+        env:
+          EDGEONE_API_TOKEN: ${{ secrets.EDGEONE_API_TOKEN }}
+        run: |
+          npx -y edgeone pages deploy ./_site -n 254511 -t "$EDGEONE_API_TOKEN"
 
       - name: 回复并关闭工单
         env:
