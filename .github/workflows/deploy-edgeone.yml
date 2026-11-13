@@ -29,8 +29,7 @@ jobs:
           python scripts/build_preview.py --site
 
       - name: 部署到 EdgeOne
-        uses: TencentEdgeOne/edgeone-pages-action@v1
-        with:
-          token: ${{ secrets.EDGEONE_API_TOKEN }}
-          project-name: "254511"
-          build-path: "./_site"
+        env:
+          EDGEONE_API_TOKEN: ${{ secrets.EDGEONE_API_TOKEN }}
+        run: |
+          npx -y edgeone pages deploy ./_site -n 254511 -t "$EDGEONE_API_TOKEN"
