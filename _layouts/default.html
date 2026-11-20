@@ -764,7 +764,7 @@
 {% if page.show_banner %}
 <header class="hero wrap">
   <div class="hero-main">
-    <p class="hero-kicker"><span id="heroWeek">26秋 · 第 7 周</span></p>
+    <p class="hero-kicker"><span id="heroWeek">26秋</span></p>
     <h1>{{ site.title }}</h1>
     <p class="sub">每周作业 · 学习通知 · 一站直达</p>
   </div>
@@ -884,7 +884,8 @@
     var days = Math.round((today.getTime() - BASE.getTime()) / 864e5);
     var week = BASE_WEEK + Math.floor(days / 7);
     if (week < 1) week = 1;
-    var text = '26秋 · 第 ' + week + ' 周';
+    // 学期结束后不能让周次无限增长，否则寒假里会显示「第 20 周」
+    var text = week <= 18 ? '26秋 · 第 ' + week + ' 周' : '26秋 · 学期已结束';
     ['heroWeek', 'sideTerm'].forEach(function (id) {
       var el = document.getElementById(id);
       if (el) el.textContent = text;

@@ -1,41 +1,655 @@
 {
+  "schema_version": 1,
+  "generated_at": "2026-11-20",
+  "generator": "tools/backfill_homework.py",
+  "source": "github.com/bertagt/254511-Notifications issues",
   "season": "2026-fall",
+  "weeks_count": 8,
+  "items_count": 39,
+  "courses": [
+    {
+      "id": "basic-medical-experiment",
+      "name": "基础医学实验",
+      "aliases": [
+        "基础医学实验"
+      ]
+    },
+    {
+      "id": "basic-physics-experiment",
+      "name": "基础物理实验",
+      "aliases": [
+        "基物实验",
+        "基础物理实验"
+      ]
+    },
+    {
+      "id": "basic-biomechanics",
+      "name": "基础生物力学",
+      "aliases": [
+        "基础生物力学",
+        "生物力学"
+      ]
+    },
+    {
+      "id": "general-physics",
+      "name": "普通物理学",
+      "aliases": [
+        "普通物理学"
+      ]
+    },
+    {
+      "id": "probability-statistics-b",
+      "name": "概率统计B",
+      "aliases": [
+        "概率统计B"
+      ]
+    },
+    {
+      "id": "circuit-analysis",
+      "name": "电路分析与医学电子系统",
+      "aliases": [
+        "电路分析与医学电子系统",
+        "电路分析医学电子系统",
+        "电路分析"
+      ]
+    }
+  ],
   "weeks": [
+    {
+      "week": 4,
+      "label": "26秋 第 4 周",
+      "season": "2026-fall",
+      "issue": 2,
+      "issue_title": "Week 4",
+      "published": "2026-10-03",
+      "notes": "**普通物理学下周带下册教材上课**",
+      "items": [
+        {
+          "course": "概率统计B",
+          "course_id": "probability-statistics-b",
+          "course_name": "概率统计B",
+          "task": "习题1.6：1、2、3、4、5、6、7；习题2.1：1、2、3；习题2.2：1、2、3；群内思考题",
+          "due": {
+            "kind": "absolute",
+            "raw": "10.6 23:59",
+            "date": "2026-10-06",
+            "time": "23:59",
+            "note": null
+          }
+        },
+        {
+          "course": "普通物理学",
+          "course_id": "general-physics",
+          "course_name": "普通物理学",
+          "task": "习题6-1、6-2、6-4、6-6、6-8、6-9、6-11、6-12、6-13、6-15、6-16、6-19、6-20、6-23、6-24、6-25、6-26",
+          "due": {
+            "kind": "absolute",
+            "raw": "10.12",
+            "date": "2026-10-12",
+            "time": null,
+            "note": null
+          }
+        },
+        {
+          "course": "基础生物力学",
+          "course_id": "basic-biomechanics",
+          "course_name": "基础生物力学",
+          "task": "第二章-5 PPT 最后两页习题",
+          "due": {
+            "kind": "relative_week",
+            "raw": "第五周课前",
+            "week": 5,
+            "weeks": [
+              5
+            ]
+          }
+        },
+        {
+          "course": "电路分析与医学电子系统",
+          "course_id": "circuit-analysis",
+          "course_name": "电路分析与医学电子系统",
+          "task": "第二次实验报告",
+          "due": {
+            "kind": "none",
+            "raw": ""
+          }
+        },
+        {
+          "course": "基础医学实验",
+          "course_id": "basic-medical-experiment",
+          "course_name": "基础医学实验",
+          "task": "第二次实验报告",
+          "due": {
+            "kind": "relative_week",
+            "raw": "第五周课前",
+            "week": 5,
+            "weeks": [
+              5
+            ]
+          }
+        },
+        {
+          "course": "基物实验",
+          "course_id": "basic-physics-experiment",
+          "course_name": "基础物理实验",
+          "task": "第二次实验报告",
+          "due": {
+            "kind": "absolute",
+            "raw": "10.6中午",
+            "date": "2026-10-06",
+            "time": null,
+            "note": "中午"
+          }
+        }
+      ]
+    },
+    {
+      "week": 5,
+      "label": "26秋 第 5 周",
+      "season": "2026-fall",
+      "issue": 3,
+      "issue_title": "Week 5",
+      "published": "2026-10-10",
+      "notes": "普通物理学带下册书上课",
+      "items": [
+        {
+          "course": "普通物理学",
+          "course_id": "general-physics",
+          "course_name": "普通物理学",
+          "task": "习题6-1、6-2、6-4、6-6、6-8、6-9、6-11、6-12、6-13、6-15、6-16、6-19、6-20、6-23、6-24、6-25、6-26",
+          "due": {
+            "kind": "absolute",
+            "raw": "10.12",
+            "date": "2026-10-12",
+            "time": null,
+            "note": null
+          }
+        },
+        {
+          "course": "基础医学实验",
+          "course_id": "basic-medical-experiment",
+          "course_name": "基础医学实验",
+          "task": "第三次实验报告",
+          "due": {
+            "kind": "relative_week",
+            "raw": "第六周课前",
+            "week": 6,
+            "weeks": [
+              6
+            ]
+          }
+        },
+        {
+          "course": "电路分析与医学电子系统",
+          "course_id": "circuit-analysis",
+          "course_name": "电路分析与医学电子系统",
+          "task": "第二次实验报告",
+          "due": {
+            "kind": "none",
+            "raw": ""
+          }
+        },
+        {
+          "course": "基础物理实验",
+          "course_id": "basic-physics-experiment",
+          "course_name": "基础物理实验",
+          "task": "第六周预习报告",
+          "due": {
+            "kind": "relative_week",
+            "raw": "第六周课前",
+            "week": 6,
+            "weeks": [
+              6
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "week": 6,
+      "label": "26秋 第 6 周",
+      "season": "2026-fall",
+      "issue": 4,
+      "issue_title": "Week 6",
+      "published": "2026-10-18",
+      "notes": "",
+      "items": [
+        {
+          "course": "概率统计B",
+          "course_id": "probability-statistics-b",
+          "course_name": "概率统计B",
+          "task": "习题2.3：1、2、3、4、5、6 习题2.4：1、2、3、4、5、6",
+          "due": {
+            "kind": "absolute",
+            "raw": "10.20 23:59",
+            "date": "2026-10-20",
+            "time": "23:59",
+            "note": null
+          }
+        },
+        {
+          "course": "基物实验",
+          "course_id": "basic-physics-experiment",
+          "course_name": "基础物理实验",
+          "task": "第六周实验报告、第七周预习报告",
+          "due": {
+            "kind": "relative_week",
+            "raw": "第七周课前",
+            "week": 7,
+            "weeks": [
+              7
+            ]
+          }
+        },
+        {
+          "course": "电路分析医学电子系统",
+          "course_id": "circuit-analysis",
+          "course_name": "电路分析与医学电子系统",
+          "task": "预习习题课习题、第三次实验报告",
+          "due": {
+            "kind": "relative_week",
+            "raw": "第七周理论课前、第八周实验课前",
+            "week": 7,
+            "weeks": [
+              7,
+              8
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "week": 7,
+      "label": "26秋 第 7 周",
+      "season": "2026-fall",
+      "issue": 5,
+      "issue_title": "Week 7",
+      "published": "2026-10-24",
+      "notes": "",
+      "items": [
+        {
+          "course": "概率统计B",
+          "course_id": "probability-statistics-b",
+          "course_name": "概率统计B",
+          "task": "习题2.5 1、3、6；习题2.6 2、3、5；习题2.7 2、4、6",
+          "due": {
+            "kind": "absolute",
+            "raw": "10.27 23:59",
+            "date": "2026-10-27",
+            "time": "23:59",
+            "note": null
+          }
+        },
+        {
+          "course": "普通物理学",
+          "course_id": "general-physics",
+          "course_name": "普通物理学",
+          "task": "习题 10-2、10-4、10-7、10-8、10-10、10-14、10-16、10-24、10-26、10-27、10-28",
+          "due": {
+            "kind": "absolute",
+            "raw": "10.26",
+            "date": "2026-10-26",
+            "time": null,
+            "note": null
+          }
+        },
+        {
+          "course": "电路分析与医学电子系统",
+          "course_id": "circuit-analysis",
+          "course_name": "电路分析与医学电子系统",
+          "task": "第三次实验报告",
+          "due": {
+            "kind": "relative_week",
+            "raw": "第八周实验课前",
+            "week": 8,
+            "weeks": [
+              8
+            ]
+          }
+        },
+        {
+          "course": "基础医学实验",
+          "course_id": "basic-medical-experiment",
+          "course_name": "基础医学实验",
+          "task": "实验报告",
+          "due": {
+            "kind": "relative_week",
+            "raw": "第八周课前",
+            "week": 8,
+            "weeks": [
+              8
+            ]
+          }
+        },
+        {
+          "course": "基物实验",
+          "course_id": "basic-physics-experiment",
+          "course_name": "基础物理实验",
+          "task": "实验报告、预习报告",
+          "due": {
+            "kind": "absolute",
+            "raw": "10.27中午",
+            "date": "2026-10-27",
+            "time": null,
+            "note": "中午"
+          }
+        }
+      ]
+    },
+    {
+      "week": 8,
+      "label": "26秋 第 8 周",
+      "season": "2026-fall",
+      "issue": 6,
+      "issue_title": "Week 8",
+      "published": "2026-11-01",
+      "notes": "",
+      "items": [
+        {
+          "course": "概率统计B",
+          "course_id": "probability-statistics-b",
+          "course_name": "概率统计B",
+          "task": "习题3.1：1、2、3、4、5；习题3.2：1、2",
+          "due": {
+            "kind": "absolute",
+            "raw": "11.3 23:59",
+            "date": "2026-11-03",
+            "time": "23:59",
+            "note": null
+          }
+        },
+        {
+          "course": "普通物理学",
+          "course_id": "general-physics",
+          "course_name": "普通物理学",
+          "task": "习题11-3, 11-4, 11-5, 11-6, 11-9, 11-11, 11-12, 11-14, 11-17, 11-18, 11-20, 11-21, 11-23, 11-28, 11-31, 11-33, 11-34",
+          "due": {
+            "kind": "absolute",
+            "raw": "11.2",
+            "date": "2026-11-02",
+            "time": null,
+            "note": null
+          }
+        },
+        {
+          "course": "基础医学实验",
+          "course_id": "basic-medical-experiment",
+          "course_name": "基础医学实验",
+          "task": "第八周实验报告（虚拟实验的）",
+          "due": {
+            "kind": "relative_week",
+            "raw": "第九周课前",
+            "week": 9,
+            "weeks": [
+              9
+            ]
+          }
+        },
+        {
+          "course": "基物实验",
+          "course_id": "basic-physics-experiment",
+          "course_name": "基础物理实验",
+          "task": "第八周实验报告、第九周预习报告",
+          "due": {
+            "kind": "relative_week",
+            "raw": "第九周课前",
+            "week": 9,
+            "weeks": [
+              9
+            ]
+          }
+        },
+        {
+          "course": "电路分析",
+          "course_id": "circuit-analysis",
+          "course_name": "电路分析与医学电子系统",
+          "task": "第八周实验报告",
+          "due": {
+            "kind": "relative_week",
+            "raw": "第十周课前",
+            "week": 10,
+            "weeks": [
+              10
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "week": 9,
+      "label": "26秋 第 9 周",
+      "season": "2026-fall",
+      "issue": 7,
+      "issue_title": "Week 9",
+      "published": "2026-11-06",
+      "notes": "",
+      "items": [
+        {
+          "course": "概率统计B",
+          "course_id": "probability-statistics-b",
+          "course_name": "概率统计B",
+          "task": "习题3.3：1、2；习题3.4：1、2、3、4、5、6、7；习题3.5：1、2、3、4、5、6",
+          "due": {
+            "kind": "absolute",
+            "raw": "11.10 23:59",
+            "date": "2026-11-10",
+            "time": "23:59",
+            "note": null
+          }
+        },
+        {
+          "course": "普通物理学",
+          "course_id": "general-physics",
+          "course_name": "普通物理学",
+          "task": "习题12-3、12-4、12-9、12-11、12-14、12-15、12-17",
+          "due": {
+            "kind": "absolute",
+            "raw": "11.9",
+            "date": "2026-11-09",
+            "time": null,
+            "note": null
+          }
+        },
+        {
+          "course": "基础医学实验",
+          "course_id": "basic-medical-experiment",
+          "course_name": "基础医学实验",
+          "task": "第九周实验报告",
+          "due": {
+            "kind": "relative_week",
+            "raw": "第十周课前",
+            "week": 10,
+            "weeks": [
+              10
+            ]
+          }
+        },
+        {
+          "course": "电路分析",
+          "course_id": "circuit-analysis",
+          "course_name": "电路分析与医学电子系统",
+          "task": "第八周实验报告",
+          "due": {
+            "kind": "relative_week",
+            "raw": "第十周课前",
+            "week": 10,
+            "weeks": [
+              10
+            ]
+          }
+        },
+        {
+          "course": "基物实验",
+          "course_id": "basic-physics-experiment",
+          "course_name": "基础物理实验",
+          "task": "第九周实验报告、第十周预习报告",
+          "due": {
+            "kind": "relative_week",
+            "raw": "第十周课前",
+            "week": 10,
+            "weeks": [
+              10
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "week": 10,
+      "label": "26秋 第 10 周",
+      "season": "2026-fall",
+      "issue": 8,
+      "issue_title": "Week 10",
+      "published": "2026-11-12",
+      "notes": "",
+      "items": [
+        {
+          "course": "普通物理学",
+          "course_id": "general-physics",
+          "course_name": "普通物理学",
+          "task": "习题12-14、12-15、12-17、12-19、12-20、12-23、12-25、12-26",
+          "due": {
+            "kind": "unknown",
+            "raw": "以通知为准"
+          }
+        },
+        {
+          "course": "基础医学实验",
+          "course_id": "basic-medical-experiment",
+          "course_name": "基础医学实验",
+          "task": "第十周实验报告",
+          "due": {
+            "kind": "relative_week",
+            "raw": "第十一周课前",
+            "week": 11,
+            "weeks": [
+              11
+            ]
+          }
+        },
+        {
+          "course": "电路分析",
+          "course_id": "circuit-analysis",
+          "course_name": "电路分析与医学电子系统",
+          "task": "第十周实验报告",
+          "due": {
+            "kind": "relative_week",
+            "raw": "第十二周课前",
+            "week": 12,
+            "weeks": [
+              12
+            ]
+          }
+        },
+        {
+          "course": "基物实验",
+          "course_id": "basic-physics-experiment",
+          "course_name": "基础物理实验",
+          "task": "第十周实验报告、第十一周预习报告",
+          "due": {
+            "kind": "relative_week",
+            "raw": "第十一周课前",
+            "week": 11,
+            "weeks": [
+              11
+            ]
+          }
+        },
+        {
+          "course": "概率统计B",
+          "course_id": "probability-statistics-b",
+          "course_name": "概率统计B",
+          "task": "",
+          "due": {
+            "kind": "none",
+            "raw": ""
+          }
+        }
+      ]
+    },
     {
       "week": 11,
       "label": "26秋 第 11 周",
+      "season": "2026-fall",
+      "issue": 9,
+      "issue_title": "Week 11",
       "published": "2026-11-19",
       "notes": "第13周基础医学实验调至本周六下午\n下周一无生物力学理论课",
       "items": [
         {
           "course": "概率统计B",
+          "course_id": "probability-statistics-b",
+          "course_name": "概率统计B",
           "task": "习题4.3的：1、3、4、5、6、7、8、10；习题5.1：1、3、5、6、7",
-          "due": "11.24 23:59"
+          "due": {
+            "kind": "absolute",
+            "raw": "11.24 23:59",
+            "date": "2026-11-24",
+            "time": "23:59",
+            "note": null
+          }
         },
         {
           "course": "普通物理学",
+          "course_id": "general-physics",
+          "course_name": "普通物理学",
           "task": "习题12-27、12-29、12-30、12-32、12-33、12-36、12-38、12-39",
-          "due": ""
+          "due": {
+            "kind": "none",
+            "raw": ""
+          }
         },
         {
           "course": "基物实验",
+          "course_id": "basic-physics-experiment",
+          "course_name": "基础物理实验",
           "task": "第十一周实验报告、第十二周预习报告",
-          "due": "第十二周课前"
+          "due": {
+            "kind": "relative_week",
+            "raw": "第十二周课前",
+            "week": 12,
+            "weeks": [
+              12
+            ]
+          }
         },
         {
           "course": "基础医学实验",
+          "course_id": "basic-medical-experiment",
+          "course_name": "基础医学实验",
           "task": "第十二周实验报告",
-          "due": "第十三周课前"
+          "due": {
+            "kind": "relative_week",
+            "raw": "第十三周课前",
+            "week": 13,
+            "weeks": [
+              13
+            ]
+          }
         },
         {
           "course": "生物力学",
+          "course_id": "basic-biomechanics",
+          "course_name": "基础生物力学",
           "task": "第一次实验报告",
-          "due": ""
+          "due": {
+            "kind": "none",
+            "raw": ""
+          }
         },
         {
           "course": "电路分析",
+          "course_id": "circuit-analysis",
+          "course_name": "电路分析与医学电子系统",
           "task": "第十周实验报告",
-          "due": "第十二周课前"
+          "due": {
+            "kind": "relative_week",
+            "raw": "第十二周课前",
+            "week": 12,
+            "weeks": [
+              12
+            ]
+          }
         }
       ]
     }
