@@ -1,0 +1,58 @@
+name: 通知自动归档
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - notices.md
+  workflow_dispatch:
+
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: 拉取仓库（含历史）
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 把上一版通知存进 archive
+        run: |
+          set -e
+          PREV=$(git log --format=%H -2 -- notices.md | tail -1)
+          if [ -z "$PREV" ]; then
+            echo "notices.md 只有一次提交，没有可归档的旧版"
+            exit 0
+          fi
+          PREV_DATE=$(git show -s --format=%cs "$PREV")
+          SHORT=$(echo "$PREV" | cut -c1-7)
+          PREV_BODY=$(git show "$PREV:notices.md" 2>/dev/null | awk 'NR==1 && $0=="---"{fm=1;next} fm && $0=="---"{fm=0;next} !fm' || true)
+          CUR_BODY=$(awk 'NR==1 && $0=="---"{fm=1;next} fm && $0=="---"{fm=0;next} !fm' notices.md)
+          if [ "$PREV_BODY" = "$CUR_BODY" ]; then
+            echo "内容未变化，跳过"
+            exit 0
+          fi
+          mkdir -p archive/notices
+          OUT="archive/notices/${PREV_DATE}-${SHORT}.md"
+          if [ -f "$OUT" ]; then
+            echo "$OUT 已存在，跳过"
+            exit 0
+          fi
+          {
+            echo "<!-- 通知归档：$PREV_DATE 的 notices.md 快照，对应提交 $SHORT。仅留档，不参与页面渲染。 -->"
+            echo "> 归档日期：$PREV_DATE ｜ 提交：\`$SHORT\`"
+            echo ""
+            echo "$PREV_BODY"
+          } > "$OUT"
+          echo "已归档到 $OUT"
+
+      - name: 提交归档
+        run: |
+          git config user.name "archive-bot"
+          git config user.email "actions@github.com"
+          git add archive/notices
+          git commit -m "🗂 通知自动归档" || echo "没有改动"
+          git push
