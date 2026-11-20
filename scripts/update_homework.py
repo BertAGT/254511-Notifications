@@ -88,12 +88,108 @@ def parse_items(items: str):
     return out
 
 
+# ---------- 课程归一化与截止时间解析（结构化数据用） ----------
+# 同一门课在表单里写法会变（基物实验 / 基础物理实验 / 生物力学 / 基础生物力学），
+# 统一映射到固定的 id + 规范名，方便统计和检索。
+COURSE_MAP = {
+    "概率统计B": ("probability-statistics-b", "概率统计B"),
+    "概率统计b": ("probability-statistics-b", "概率统计B"),
+    "普通物理学": ("general-physics", "普通物理学"),
+    "基础生物力学": ("basic-biomechanics", "基础生物力学"),
+    "生物力学": ("basic-biomechanics", "基础生物力学"),
+    "电路分析与医学电子系统": ("circuit-analysis", "电路分析与医学电子系统"),
+    "电路分析医学电子系统": ("circuit-analysis", "电路分析与医学电子系统"),
+    "电路分析": ("circuit-analysis", "电路分析与医学电子系统"),
+    "基础医学实验": ("basic-medical-experiment", "基础医学实验"),
+    "基物实验": ("basic-physics-experiment", "基础物理实验"),
+    "基础物理实验": ("basic-physics-experiment", "基础物理实验"),
+}
+
+CN_NUM = {"一": 1, "二": 2, "三": 3, "四": 4, "五": 5, "六": 6, "七": 7, "八": 8,
+          "九": 9, "十": 10, "十一": 11, "十二": 12, "十三": 13, "十四": 14,
+          "十五": 15, "十六": 16, "十七": 17, "十八": 18}
+
+
+def course_of(raw: str):
+    """课程原文 → (id, 规范名)。认不出就归到 unknown，保留原文。"""
+    key = (raw or "").strip()
+    if key in COURSE_MAP:
+        return COURSE_MAP[key]
+    compact = key.replace(" ", "")
+    for k, v in COURSE_MAP.items():
+        if k in compact or compact in k:
+            return v
+    return ("unknown", key)
+
+
+def parse_due(text: str, year: int = None):
+    """截止时间 → 结构化。认不出就保留原文，绝不丢信息。"""
+    from datetime import date as _date
+    year = year or _date.today().year
+    t = (text or "").strip()
+    if not t:
+        return {"kind": "none", "raw": ""}
+    if t in ("以通知为准", "以老师通知为准", "待定", "TBD"):
+        return {"kind": "unknown", "raw": t}
+
+    m = re.match(r"^(\d{1,2})[.月](\d{1,2})日?\s*(.*)$", t)
+    if m:
+        month, day, rest = int(m.group(1)), int(m.group(2)), m.group(3).strip()
+        tm = re.search(r"(\d{1,2})[:：](\d{2})", rest)
+        return {
+            "kind": "absolute",
+            "raw": t,
+            "date": f"{year}-{month:02d}-{day:02d}",
+            "time": f"{int(tm.group(1)):02d}:{tm.group(2)}" if tm else None,
+            "note": rest if rest and not tm else None,
+        }
+
+    weeks = []
+    for tok in re.findall(r"第\s*([一二三四五六七八九十\d]+)\s*周", t):
+        n = int(tok) if tok.isdigit() else CN_NUM.get(tok)
+        if n and n not in weeks:
+            weeks.append(n)
+    if weeks:
+        return {"kind": "relative_week", "raw": t, "week": weeks[0], "weeks": weeks}
+
+    return {"kind": "text", "raw": t}
+
+
+def enrich_item(item: dict) -> dict:
+    """旧结构 {course,task,due:字符串} → 新结构（含 course_id 与结构化 due）。"""
+    due = item.get("due")
+    cid, cname = course_of(item.get("course", ""))
+    return {
+        "course": item.get("course", ""),
+        "course_id": cid,
+        "course_name": cname,
+        "task": item.get("task", ""),
+        "due": due if isinstance(due, dict) else parse_due(due or ""),
+    }
+
+
+def course_index(weeks) -> list:
+    """从周列表重建课程清单。"""
+    idx = {}
+    for w in weeks:
+        for it in w.get("items", []):
+            it = enrich_item(it)
+            c = idx.setdefault(it["course_id"], {
+                "id": it["course_id"], "name": it["course_name"], "aliases": []})
+            if it["course"] and it["course"] not in c["aliases"]:
+                c["aliases"].append(it["course"])
+    return sorted(idx.values(), key=lambda c: c["name"])
+
+
 def build_week_block(week: str, items: str, notes: str) -> str:
     """把表单内容拼装成一周的 Markdown 板块。"""
     lines = [f"# 📅 {week}", ""]
 
     if notes:
-        lines.append(f'<div class="notice">📌 {notes}</div>')
+        # 表单里的换行必须转成 <br>，否则多条提醒会被 HTML 折成一行，
+        # 看起来像一句话，容易读错。
+        note_html = "<br>".join(l.strip() for l in notes.splitlines() if l.strip())
+        lines.append(f'<div class="notice">📌 {note_html}</div>')
         lines.append("")
 
     lines.append("| 科目 | 作业内容 | 截止时间 |")
@@ -222,14 +318,32 @@ def save_archive(week: str, block: str, items: str, notes: str):
     kept.append({
         "week": n,
         "label": week,
+        "season": season,
         "published": date.today().isoformat(),
         "notes": notes,
-        "items": parse_items(items),
+        "items": [enrich_item(i) for i in parse_items(items)],
     })
     kept.sort(key=lambda w: w["week"])
 
+    # 历史周可能是早期写的旧结构（due 是纯字符串），统一规范化，
+    # 避免同一个文件里两种结构并存。
+    for w in kept:
+        w["items"] = [enrich_item(i) for i in w.get("items", [])]
+        w.setdefault("season", season)
+
+    # 只重算统计量，保留既有顶层字段（schema_version / source 等），
+    # 否则每次发布都会把结构化数据的元信息冲掉。
+    payload = {k: v for k, v in data.items() if k != "weeks"}
+    payload.setdefault("schema_version", 1)
+    payload["season"] = season
+    payload["generated_at"] = date.today().isoformat()
+    payload["weeks_count"] = len(kept)
+    payload["items_count"] = sum(len(w.get("items", [])) for w in kept)
+    payload["courses"] = course_index(kept)
+    payload["weeks"] = kept
+
     with open(json_path, "w", encoding="utf-8") as f:
-        json.dump({"season": season, "weeks": kept}, f, ensure_ascii=False, indent=2)
+        json.dump(payload, f, ensure_ascii=False, indent=2)
 
     print(f"已归档：{md_path} + {json_path}（共 {len(kept)} 周）")
 
